@@ -210,6 +210,25 @@
   .start-screen .seal-big{font-size:44px;}
   .start-screen h1{font-size:30px; margin:10px 0 6px;}
   .start-screen p.lede{color:var(--ink-dim); font-size:15.5px; margin-bottom:26px;}
+
+  /* ---------- NPA mindmap (карта нормативно-правовой базы) ---------- */
+  .npa-map-intro{color:var(--ink-dim); font-size:14.5px; margin:0 0 12px; max-width:900px;}
+  .npa-map-outer{
+    position:relative; left:50%; transform:translateX(-50%);
+    width:96vw; max-width:1900px; margin:0 0 10px;
+  }
+  .npa-map-scroll{
+    overflow-x:auto; overflow-y:hidden; border:1px solid var(--folder-line);
+    background:var(--folder); border-radius:var(--radius); box-shadow:var(--shadow);
+    padding:6px;
+  }
+  .npa-map-scroll .npa-map-inner{min-width:1360px;}
+  .npa-map-scroll svg{width:100%; height:auto; display:block;}
+  .npa-map-caption{
+    color:var(--ink-dim); font-size:13.5px; line-height:1.5; max-width:900px;
+    margin:12px 0 26px;
+  }
+  .npa-map-caption b{color:var(--ink);}
   .org-card{
     border:1px solid var(--folder-line); background:var(--folder); border-radius:var(--radius);
     padding:16px 18px; margin-bottom:22px;
@@ -615,6 +634,135 @@ setTimeout(animateProgress, 400);
   <h1>Личное дело специалиста ИБ</h1>
   <div id="coverIdPreview"></div>
   <p class="lede">Практикум по дисциплине «Организационно-правовое обеспечение информационной безопасности» (10.04.01, магистратура). Ниже — четыре вакантные должности специалиста по информационной безопасности в организациях разного профиля. Выберите одну (можно пройти и не одну): каждая ведёт собственное личное дело и собственную итоговую оценку, а к концу практикума, если тесты по каждому этапу сданы, вы дорастаете по профстандарту до и.о. начальника отдела.</p>
+
+  <p class="npa-map-intro">Прежде чем выбрать место работы, посмотрите на карту ниже: она показывает, из чего вообще складывается нормативно-правовая база вашей будущей должности. В центре каждого кластера — объект защиты информации (гостайна, служебная тайна, персональные данные, коммерческая тайна, значимый объект КИИ и сквозная правовая рамка), а вокруг — конкретные законы, указы, приказы и ГОСТы, которые обязан знать специалист по ИБ, работающий с этим объектом. Названия актов — рабочие гиперссылки на первоисточник (наведите курсор, чтобы увидеть адрес, или откройте в новой вкладке).</p>
+  <div class="npa-map-outer">
+    <div class="npa-map-scroll"><div class="npa-map-inner">
+<svg viewBox="0 0 2832 1690" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-labelledby="npaMapTitle npaMapDesc" style="width:100%;height:auto;display:block;">
+<title id="npaMapTitle">Карта нормативно-правовой базы дисциплины ОПОИБ</title>
+<desc id="npaMapDesc">Шесть объектов защиты информации, вокруг каждого — нормативные акты, которые студент обязан знать на рабочем месте. Названия актов — рабочие гиперссылки на первоисточники.</desc>
+<defs>
+  <filter id="npaShadow" x="-40%" y="-40%" width="180%" height="180%">
+    <feDropShadow dx="0" dy="1.5" stdDeviation="3.5" flood-color="#000000" flood-opacity="0.14"/>
+  </filter>
+</defs>
+<rect x="0" y="0" width="2832" height="1690" fill="var(--paper,#FBF7EE)"/>
+<rect x="18" y="18" width="2796" height="1654" rx="14" fill="none" stroke="var(--folder-line,#E3D5B4)" stroke-width="1.5"/>
+
+<text x="1416.0" y="66" text-anchor="middle" font-family="PT Serif, Georgia, serif" font-size="27" font-weight="700" fill="var(--ink,#221C13)">🗂️ Карта нормативно-правовой базы дисциплины ОПОИБ</text>
+<text x="1416.0" y="100" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="15.5" fill="var(--ink-dim,#6B6152)">Пять объектов защиты информации + общая правовая рамка — и нормативные акты, которые нужно знать и соблюдать на рабочем месте</text>
+<text x="1416.0" y="126" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="11.5" fill="var(--ink-dim,#6B6152)">по данным аналитической справки от 24.08.2026 · названия актов — рабочие ссылки на первоисточник (наведите или откройте в новой вкладке)</text>
+<path d="M 490.0 540.0 C 490.0 515.0 490.0 315.0 490.0 290.0" fill="none" stroke="var(--danger,#A23A31)" stroke-width="2.1" stroke-linecap="round"/>
+<path d="M 490.0 540.0 C 490.0 565.0 490.0 765.0 490.0 790.0" fill="none" stroke="var(--danger,#A23A31)" stroke-width="2.1" stroke-linecap="round"/>
+<path d="M 1416.0 540.0 C 1416.0 515.0 1416.0 315.0 1416.0 290.0" fill="none" stroke="var(--accent,#8C5E17)" stroke-width="2.1" stroke-linecap="round"/>
+<path d="M 2342.0 540.0 C 2342.0 515.0 2342.0 315.0 2342.0 290.0" fill="none" stroke="var(--accent-2,#28575D)" stroke-width="2.1" stroke-linecap="round"/>
+<path d="M 2342.0 540.0 C 2412.6 540.0 2553.8 540.0 2624.4 540.0" fill="none" stroke="var(--accent-2,#28575D)" stroke-width="2.1" stroke-linecap="round"/>
+<path d="M 2342.0 540.0 C 2342.0 565.0 2342.0 765.0 2342.0 790.0" fill="none" stroke="var(--accent-2,#28575D)" stroke-width="2.1" stroke-linecap="round"/>
+<path d="M 2342.0 540.0 C 2268.7 540.0 2122.0 540.0 2048.7 540.0" fill="none" stroke="var(--accent-2,#28575D)" stroke-width="2.1" stroke-linecap="round"/>
+<path d="M 490.0 1280.0 C 490.0 1255.0 490.0 1055.0 490.0 1030.0" fill="none" stroke="var(--warn,#A85A22)" stroke-width="2.1" stroke-linecap="round"/>
+<path d="M 1416.0 1280.0 C 1416.0 1255.0 1416.0 1055.0 1416.0 1030.0" fill="none" stroke="var(--ok,#3E7A4C)" stroke-width="2.1" stroke-linecap="round"/>
+<path d="M 1416.0 1280.0 C 1485.9 1296.1 1625.6 1425.2 1695.5 1441.3" fill="none" stroke="var(--ok,#3E7A4C)" stroke-width="2.1" stroke-linecap="round"/>
+<path d="M 1416.0 1280.0 C 1342.5 1297.0 1195.5 1432.8 1122.0 1449.8" fill="none" stroke="var(--ok,#3E7A4C)" stroke-width="2.1" stroke-linecap="round"/>
+<path d="M 2342.0 1280.0 C 2342.0 1255.0 2342.0 1055.0 2342.0 1030.0" fill="none" stroke="var(--ink-dim,#6B6152)" stroke-width="2.1" stroke-linecap="round"/>
+<path d="M 2342.0 1280.0 C 2416.2 1297.1 2564.8 1434.3 2639.0 1451.5" fill="none" stroke="var(--ink-dim,#6B6152)" stroke-width="2.1" stroke-linecap="round"/>
+<path d="M 2342.0 1280.0 C 2269.6 1296.7 2124.7 1430.5 2052.3 1447.3" fill="none" stroke="var(--ink-dim,#6B6152)" stroke-width="2.1" stroke-linecap="round"/>
+<g filter="url(#npaShadow)"><rect x="340.0" y="492.0" width="300.0" height="96.0" rx="12" ry="12" fill="var(--danger,#A23A31)" stroke="none" stroke-width="1.6"/></g>
+<g filter="url(#npaShadow)"><rect x="350.8" y="249.0" width="278.5" height="82.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--danger,#A23A31)" stroke-width="1.6"/></g>
+<g filter="url(#npaShadow)"><rect x="321.6" y="749.0" width="336.9" height="82.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--danger,#A23A31)" stroke-width="1.6"/></g>
+<g filter="url(#npaShadow)"><rect x="1266.0" y="495.0" width="300.0" height="90.0" rx="12" ry="12" fill="var(--accent,#8C5E17)" stroke="none" stroke-width="1.6"/></g>
+<g filter="url(#npaShadow)"><rect x="1240.2" y="240.0" width="351.5" height="100.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--accent,#8C5E17)" stroke-width="1.6"/></g>
+<g filter="url(#npaShadow)"><rect x="2192.0" y="477.0" width="300.0" height="126.0" rx="12" ry="12" fill="var(--accent-2,#28575D)" stroke="none" stroke-width="1.6"/></g>
+<g filter="url(#npaShadow)"><rect x="2210.1" y="249.0" width="263.9" height="82.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--accent-2,#28575D)" stroke-width="1.6"/></g>
+<g filter="url(#npaShadow)"><rect x="2518.0" y="490.0" width="212.8" height="100.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--accent-2,#28575D)" stroke-width="1.6"/></g>
+<g filter="url(#npaShadow)"><rect x="2213.7" y="749.0" width="256.6" height="82.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--accent-2,#28575D)" stroke-width="1.6"/></g>
+<g filter="url(#npaShadow)"><rect x="1931.3" y="490.0" width="234.7" height="100.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--accent-2,#28575D)" stroke-width="1.6"/></g>
+<g filter="url(#npaShadow)"><rect x="340.0" y="1232.0" width="300.0" height="96.0" rx="12" ry="12" fill="var(--warn,#A85A22)" stroke="none" stroke-width="1.6"/></g>
+<g filter="url(#npaShadow)"><rect x="328.9" y="980.0" width="322.3" height="100.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--warn,#A85A22)" stroke-width="1.6"/></g>
+<g filter="url(#npaShadow)"><rect x="1266.0" y="1232.0" width="300.0" height="96.0" rx="12" ry="12" fill="var(--ok,#3E7A4C)" stroke="none" stroke-width="1.6"/></g>
+<g filter="url(#npaShadow)"><rect x="1258.5" y="980.0" width="315.0" height="100.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--ok,#3E7A4C)" stroke-width="1.6"/></g>
+<g filter="url(#npaShadow)"><rect x="1548.9" y="1400.3" width="293.1" height="82.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--ok,#3E7A4C)" stroke-width="1.6"/></g>
+<g filter="url(#npaShadow)"><rect x="990.0" y="1408.8" width="263.9" height="82.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--ok,#3E7A4C)" stroke-width="1.6"/></g>
+<g filter="url(#npaShadow)"><rect x="2192.0" y="1247.5" width="300.0" height="65.0" rx="12" ry="12" fill="var(--ink-dim,#6B6152)" stroke="none" stroke-width="1.6"/></g>
+<g filter="url(#npaShadow)"><rect x="2206.4" y="989.0" width="271.2" height="82.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--ink-dim,#6B6152)" stroke-width="1.6"/></g>
+<g filter="url(#npaShadow)"><rect x="2518.0" y="1410.5" width="242.0" height="82.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--ink-dim,#6B6152)" stroke-width="1.6"/></g>
+<g filter="url(#npaShadow)"><rect x="1938.6" y="1397.3" width="227.4" height="100.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--ink-dim,#6B6152)" stroke-width="1.6"/></g>
+<text x="490.0" y="519.0" text-anchor="middle" font-family="PT Serif, Georgia, serif" font-size="17.5" font-weight="700" fill="var(--accent-ink,#FBF7EE)">Государственная тайна</text>
+<text x="490.0" y="540.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="11.5" font-weight="400" fill="var(--accent-ink,#FBF7EE)">ФСБ России, ФСТЭК России</text>
+<text x="490.0" y="559.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--accent-ink,#FBF7EE)">РАБОЧЕЕ МЕСТО:</text>
+<text x="490.0" y="574.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="400" fill="var(--accent-ink,#FBF7EE)">НИИ «Периметр»</text>
+<text x="1416.0" y="522.0" text-anchor="middle" font-family="PT Serif, Georgia, serif" font-size="17.5" font-weight="700" fill="var(--accent-ink,#FBF7EE)">Служебная тайна / ДСП</text>
+<text x="1416.0" y="541.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--accent-ink,#FBF7EE)">РАБОЧЕЕ МЕСТО:</text>
+<text x="1416.0" y="556.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="400" fill="var(--accent-ink,#FBF7EE)">НИИ «Периметр»</text>
+<text x="1416.0" y="571.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="400" fill="var(--accent-ink,#FBF7EE)">Энергосеть (КИИ)</text>
+<text x="2342.0" y="504.0" text-anchor="middle" font-family="PT Serif, Georgia, serif" font-size="17.5" font-weight="700" fill="var(--accent-ink,#FBF7EE)">Персональные данные</text>
+<text x="2342.0" y="525.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="11.5" font-weight="400" fill="var(--accent-ink,#FBF7EE)">Роскомнадзор, Банк России</text>
+<text x="2342.0" y="544.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--accent-ink,#FBF7EE)">РАБОЧЕЕ МЕСТО:</text>
+<text x="2342.0" y="559.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="400" fill="var(--accent-ink,#FBF7EE)">НИИ «Периметр» · Банк</text>
+<text x="2342.0" y="574.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="400" fill="var(--accent-ink,#FBF7EE)">IT-компания</text>
+<text x="2342.0" y="589.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="400" fill="var(--accent-ink,#FBF7EE)">Энергосеть (КИИ)</text>
+<text x="490.0" y="1259.0" text-anchor="middle" font-family="PT Serif, Georgia, serif" font-size="17.5" font-weight="700" fill="var(--accent-ink,#FBF7EE)">Коммерческая тайна / ноу-хау</text>
+<text x="490.0" y="1280.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="11.5" font-weight="400" fill="var(--accent-ink,#FBF7EE)">Роскомнадзор</text>
+<text x="490.0" y="1299.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--accent-ink,#FBF7EE)">РАБОЧЕЕ МЕСТО:</text>
+<text x="490.0" y="1314.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="400" fill="var(--accent-ink,#FBF7EE)">Банк · IT-компания</text>
+<text x="1416.0" y="1259.0" text-anchor="middle" font-family="PT Serif, Georgia, serif" font-size="17.5" font-weight="700" fill="var(--accent-ink,#FBF7EE)">Значимый объект КИИ</text>
+<text x="1416.0" y="1280.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="11.5" font-weight="400" fill="var(--accent-ink,#FBF7EE)">ФСТЭК России, НКЦКИ / ГосСОПКА</text>
+<text x="1416.0" y="1299.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--accent-ink,#FBF7EE)">РАБОЧЕЕ МЕСТО:</text>
+<text x="1416.0" y="1314.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="400" fill="var(--accent-ink,#FBF7EE)">Энергосеть (КИИ)</text>
+<text x="2342.0" y="1274.5" text-anchor="middle" font-family="PT Serif, Georgia, serif" font-size="17.5" font-weight="700" fill="var(--accent-ink,#FBF7EE)">Общая правовая рамка</text>
+<text x="2342.0" y="1295.5" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="11.5" font-weight="400" fill="var(--accent-ink,#FBF7EE)">сквозная для всех объектов</text>
+<a xlink:href="https://www.consultant.ru/document/cons_doc_LAW_2481/" href="https://www.consultant.ru/document/cons_doc_LAW_2481/" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://www.consultant.ru/document/cons_doc_LAW_2481/</title><text x="490.0" y="269.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">Закон РФ №5485-1</text>
+<text x="490.0" y="286.5" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">«О государственной тайне»</text>
+<text x="490.0" y="322.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--danger,#A23A31)">consultant.ru ↗</text></a>
+<a xlink:href="https://www.consultant.ru/document/cons_doc_LAW_469293/" href="https://www.consultant.ru/document/cons_doc_LAW_469293/" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://www.consultant.ru/document/cons_doc_LAW_469293/</title><text x="490.0" y="769.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">ПП РФ №132 от 07.02.2024</text>
+<text x="490.0" y="786.5" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">допуск персонала, формы 1 / 2 / 3</text>
+<text x="490.0" y="822.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--danger,#A23A31)">consultant.ru ↗</text></a>
+<a xlink:href="https://base.garant.ru/10200083/" href="https://base.garant.ru/10200083/" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://base.garant.ru/10200083/</title><text x="1416.0" y="260.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">Указ Президента №188</text>
+<text x="1416.0" y="277.5" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">перечень сведений конфиденциального</text>
+<text x="1416.0" y="295.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">характера</text>
+<text x="1416.0" y="331.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--accent,#8C5E17)">base.garant.ru ↗</text></a>
+<a xlink:href="https://www.consultant.ru/document/cons_doc_LAW_61801/" href="https://www.consultant.ru/document/cons_doc_LAW_61801/" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://www.consultant.ru/document/cons_doc_LAW_61801/</title><text x="2342.0" y="269.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">152-ФЗ</text>
+<text x="2342.0" y="286.5" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">«О персональных данных»</text>
+<text x="2342.0" y="322.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--accent-2,#28575D)">consultant.ru ↗</text></a>
+<a xlink:href="https://cisoclub.ru/fstjek-rossii-gotovit-otmenu-prikaza-21-i-novuju-sistemu-zashhity-personalnyh-dannyh/" href="https://cisoclub.ru/fstjek-rossii-gotovit-otmenu-prikaza-21-i-novuju-sistemu-zashhity-personalnyh-dannyh/" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://cisoclub.ru/fstjek-rossii-gotovit-otmenu-prikaza-21-i-novuju-sistemu-zashhity-personalnyh-dannyh/</title><text x="2624.4" y="510.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">Приказ ФСТЭК №21</text>
+<text x="2624.4" y="527.5" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">отмена ожидается</text>
+<text x="2624.4" y="545.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">с 01.09.2026</text>
+<text x="2624.4" y="581.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--accent-2,#28575D)">cisoclub.ru ↗</text></a>
+<a xlink:href="https://rtmtech.ru/articles/obzor-851-p/" href="https://rtmtech.ru/articles/obzor-851-p/" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://rtmtech.ru/articles/obzor-851-p/</title><text x="2342.0" y="769.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">Положение ЦБ №851-П</text>
+<text x="2342.0" y="786.5" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">спец. режим для банков</text>
+<text x="2342.0" y="822.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--accent-2,#28575D)">rtmtech.ru ↗</text></a>
+<a xlink:href="https://protect.gost.ru/gost/details/73023910-82ab-4b4a-bf57-e676497f30a3" href="https://protect.gost.ru/gost/details/73023910-82ab-4b4a-bf57-e676497f30a3" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://protect.gost.ru/gost/details/73023910-82ab-4b4a-bf57-e676497f30a3</title><text x="2048.7" y="510.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">ГОСТ Р 57580.1-2017</text>
+<text x="2048.7" y="527.5" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">базовый состав</text>
+<text x="2048.7" y="545.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">мер защиты</text>
+<text x="2048.7" y="581.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--accent-2,#28575D)">protect.gost.ru ↗</text></a>
+<a xlink:href="https://www.consultant.ru/document/cons_doc_LAW_48699/" href="https://www.consultant.ru/document/cons_doc_LAW_48699/" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://www.consultant.ru/document/cons_doc_LAW_48699/</title><text x="490.0" y="1000.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">98-ФЗ «О коммерческой тайне»</text>
+<text x="490.0" y="1017.5" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">ст. 4 — режим, ст. 5 — перечень</text>
+<text x="490.0" y="1035.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">несекретных сведений</text>
+<text x="490.0" y="1071.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--warn,#A85A22)">consultant.ru ↗</text></a>
+<a xlink:href="https://base.garant.ru/71730198/" href="https://base.garant.ru/71730198/" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://base.garant.ru/71730198/</title><text x="1416.0" y="1000.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">187-ФЗ</text>
+<text x="1416.0" y="1017.5" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">«О безопасности критической</text>
+<text x="1416.0" y="1035.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">информационной инфраструктуры»</text>
+<text x="1416.0" y="1071.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--ok,#3E7A4C)">base.garant.ru ↗</text></a>
+<a xlink:href="https://rppa.pro/npa/fstek_05.02.2021" href="https://rppa.pro/npa/fstek_05.02.2021" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://rppa.pro/npa/fstek_05.02.2021</title><text x="1695.5" y="1420.3" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">Методика оценки угроз ФСТЭК</text>
+<text x="1695.5" y="1437.8" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">от 05.02.2021</text>
+<text x="1695.5" y="1473.3" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--ok,#3E7A4C)">rppa.pro ↗</text></a>
+<a xlink:href="https://base.garant.ru/70136258/" href="https://base.garant.ru/70136258/" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://base.garant.ru/70136258/</title><text x="1122.0" y="1428.8" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">ПП РФ №79 от 03.02.2012</text>
+<text x="1122.0" y="1446.3" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">лицензирование ТЗКИ</text>
+<text x="1122.0" y="1481.8" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--ok,#3E7A4C)">base.garant.ru ↗</text></a>
+<a xlink:href="https://www.consultant.ru/document/cons_doc_LAW_61798/" href="https://www.consultant.ru/document/cons_doc_LAW_61798/" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://www.consultant.ru/document/cons_doc_LAW_61798/</title><text x="2342.0" y="1009.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">149-ФЗ</text>
+<text x="2342.0" y="1026.5" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">общий понятийный аппарат</text>
+<text x="2342.0" y="1062.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--ink-dim,#6B6152)">consultant.ru ↗</text></a>
+<a xlink:href="https://base.garant.ru/71556224/" href="https://base.garant.ru/71556224/" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://base.garant.ru/71556224/</title><text x="2639.0" y="1430.5" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">Доктрина ИБ РФ</text>
+<text x="2639.0" y="1448.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">Указ Президента №646</text>
+<text x="2639.0" y="1483.5" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--ink-dim,#6B6152)">base.garant.ru ↗</text></a>
+<a xlink:href="https://fgos.ru/fgos/fgos-10-04-01-informacionnaya-bezopasnost-1455/" href="https://fgos.ru/fgos/fgos-10-04-01-informacionnaya-bezopasnost-1455/" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://fgos.ru/fgos/fgos-10-04-01-informacionnaya-bezopasnost-1455/</title><text x="2052.3" y="1417.3" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">ФГОС ВО 10.04.01</text>
+<text x="2052.3" y="1434.8" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">+ профстандарт</text>
+<text x="2052.3" y="1452.3" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">«Специалист по ИБ»</text>
+<text x="2052.3" y="1488.3" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--ink-dim,#6B6152)">fgos.ru ↗</text></a>
+</svg>
+    </div></div>
+  </div>
+  <p class="npa-map-caption">Карта наглядно показывает главный принцип дисциплины ОПОИБ: у каждого объекта защиты — свой правовой контур, и на практике специалист по ИБ применяет не «весь корпус законов сразу», а именно ту связку норм, которая относится к информации, обращающейся на его рабочем месте. Например, сотрудник режимного НИИ действует в контуре гостайны (закон РФ №5485-1, ПП РФ №132) и одновременно — служебной тайны и персональных данных, а специалист банка — в контуре персональных данных (152-ФЗ, Положение Банка России №851-П, ГОСТ Р 57580.1) и коммерческой тайны (98-ФЗ). Общая правовая рамка (149-ФЗ, Доктрина ИБ РФ, ФГОС ВО 10.04.01) действует сквозно для всех профилей.</p>
+
   <div id="orgPickArea"></div>
 </div>
 
