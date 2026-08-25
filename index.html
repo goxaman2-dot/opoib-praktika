@@ -1,3 +1,5 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Личное дело специалиста ИБ</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400&family=PT+Sans:wght@400;700&family=PT+Mono&display=swap');
@@ -218,7 +220,12 @@
     margin:14px 0 26px;
   }
   .npa-map-caption b{color:var(--ink);}
-  .atom-wrap{margin:0 0 6px;}
+  .atom-wrap{
+    position:relative; left:50%; transform:translateX(-50%);
+    width:96vw; max-width:1300px; margin:0 0 6px;
+  }
+  .atom-layout{display:flex; align-items:flex-start; gap:22px;}
+  .atom-scene-col{flex:1 1 auto; min-width:0;}
   .atom-scene{
     position:relative; height:520px; perspective:1750px;
     display:flex; align-items:center; justify-content:center;
@@ -227,6 +234,10 @@
     overflow:hidden;
   }
   .atom-scene.dragging{cursor:grabbing;}
+  @media (max-width:720px){
+    .atom-layout{flex-direction:column;}
+    .atom-panel{flex:1 1 auto; width:100%; max-height:none;}
+  }
   @media (max-width:560px){
     .atom-scene{ height:400px; }
     .atom-moon{ font-size:9px; padding:3px; }
@@ -252,8 +263,9 @@
   .atom-moon.is-active{ box-shadow: 0 0 0 3px var(--ink), 0 7px 16px rgba(0,0,0,.25), inset -6px -6px 14px rgba(0,0,0,.25), inset 4px 4px 12px rgba(255,255,255,.25); }
   .atom-hint{ text-align:center; font-size:12px; color:var(--ink-dim); font-family:"PT Mono",monospace; margin:10px 0 0; line-height:1.6; }
   .atom-panel{
-    margin-top:14px; border:1px solid var(--folder-line); background:var(--folder); border-radius:var(--radius);
+    flex:0 0 340px; margin-top:0; border:1px solid var(--folder-line); background:var(--folder); border-radius:var(--radius);
     padding:15px 17px; box-shadow:var(--shadow); min-height:56px;
+    max-height:520px; overflow-y:auto;
   }
   .atom-panel .ap-empty{color:var(--ink-dim); font-size:13.5px;}
   .atom-panel h3{font-family:"PT Serif",serif; margin:0 0 4px; font-size:18px;}
@@ -294,6 +306,32 @@
   .role-status.role-done{background:var(--ok-bg); color:var(--ok);}
   .role-cta{font-size:12.5px; font-weight:700; color:var(--accent); margin-top:9px;}
   @media (max-width:620px){ .org-grid{grid-template-columns:1fr;} }
+
+  /* ---------- страница 1: погружение в законодательство (шапка + блок теста-шлюза) ---------- */
+  .page-kicker{
+    display:inline-block; font-family:"PT Mono",monospace; font-size:11.5px; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--accent); background:var(--folder); border:1px solid var(--folder-line);
+    border-radius:20px; padding:4px 12px; margin:6px 0 14px;
+  }
+  .gate-intro{color:var(--ink-dim); font-size:14.5px; margin:0 0 16px; max-width:900px;}
+  .gate-block{
+    border:1px solid var(--folder-line); background:var(--folder); border-radius:var(--radius);
+    padding:18px 20px; margin:0 0 18px;
+  }
+  .gate-block-head{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:2px; flex-wrap:wrap;}
+  .gate-block h4{font-family:"PT Serif",serif; font-size:16px; margin:0;}
+  .gate-block-sub{font-size:12px; color:var(--ink-dim); margin-bottom:14px;}
+  .gate-block-score{
+    font-family:"PT Mono",monospace; font-size:11.5px; padding:2px 9px; border-radius:20px;
+    border:1px solid var(--line); color:var(--ink-dim); white-space:nowrap;
+  }
+  .gate-block-score.is-pass{border-color:var(--ok); color:var(--ok); background:var(--ok-bg);}
+  .gate-block-score.is-fail{border-color:var(--danger); color:var(--danger); background:var(--danger-bg);}
+  .gate-lock-note{
+    font-size:13.5px; color:var(--ink-dim); background:var(--paper); border:1px dashed var(--folder-line);
+    border-radius:8px; padding:12px 14px; margin-top:4px;
+  }
+  .gate-next-wrap{margin:6px 0 40px;}
 
   .final-cert{
     text-align:center; padding:34px 26px; border:2px solid var(--accent); border-radius:var(--radius);
@@ -380,11 +418,13 @@
   .id-thumb img{width:100%; height:100%; object-fit:cover;}
   .id-name{font-weight:700; font-size:13.5px; line-height:1.25;}
   .id-group{font-size:11.5px; color:var(--ink-dim);}
+  .id-watermark{font-family:"PT Mono",monospace; font-size:9.5px; color:var(--ink-dim); opacity:.7; margin-top:3px; letter-spacing:.01em;}
 
   .cert-id{display:flex; align-items:center; gap:14px; justify-content:center; margin:14px 0;}
   .cert-id .id-thumb{width:56px; height:56px; flex:0 0 56px; font-size:24px;}
   .cert-id .id-name{font-size:16px;}
   .cert-id .id-group{font-size:12.5px;}
+  .cert-id .id-watermark{font-size:10.5px;}
 
   /* ============================================================
      ЗАСТАВКА (по образцу практикума «Управление проектами по ИБ»,
@@ -669,18 +709,23 @@ setTimeout(animateProgress, 400);
   <div class="seal-big">🗂️</div>
   <h1>Личное дело специалиста ИБ</h1>
   <div id="coverIdPreview"></div>
-  <p class="lede">Практикум по дисциплине «Организационно-правовое обеспечение информационной безопасности» (10.04.01, магистратура). Ниже — четыре вакантные должности специалиста по информационной безопасности в организациях разного профиля. Выберите одну (можно пройти и не одну): каждая ведёт собственное личное дело и собственную итоговую оценку, а к концу практикума, если тесты по каждому этапу сданы, вы дорастаете по профстандарту до и.о. начальника отдела.</p>
+  <div class="page-kicker">Страница 1 из 2 · Погружение в законодательство РФ</div>
+  <p class="lede">Практикум по дисциплине «Организационно-правовое обеспечение информационной безопасности» (10.04.01, магистратура) начинается не с должности, а с закона. Ниже — интерактивная модель нормативно-правовой базы специалиста по ИБ и проверочный блок из 30 вопросов: по пять на каждый из шести объектов защиты. Правильных ответов нужно набрать не меньше 60% — только тогда откроется выбор одной из четырёх вакантных должностей. Изучать объекты можно в любом порядке: цель этой страницы в том, чтобы к моменту распределения на должность вы уже ориентировались в законах, а не разбирались с ними по ходу дела.</p>
 
-  <p class="npa-map-intro">Прежде чем выбрать место работы, покрутите модель ниже: она показывает, из чего вообще складывается нормативно-правовая база вашей будущей должности. В центре — сфера «ОПОИБ», вокруг неё шесть спутников — объекты защиты информации (гостайна, служебная тайна, персональные данные, коммерческая тайна, значимый объект КИИ и сквозная правовая рамка). Размер спутника — не количество законов, а вес предусмотренной за его нарушение ответственности. Нажмите на спутник — откроется список актов с рабочими гиперссылками на первоисточник и строкой о том, чем конкретно грозит нарушение.</p>
+  <p class="npa-map-intro">Прежде чем перейти к проверке, покрутите модель ниже: она показывает, из чего вообще складывается нормативно-правовая база будущей должности. В центре — сфера «ОПОИБ», вокруг неё шесть спутников — объекты защиты информации (гостайна, служебная тайна, персональные данные, коммерческая тайна, значимый объект КИИ и сквозная правовая рамка). Размер спутника — не количество законов, а вес предусмотренной за его нарушение ответственности. Наведите курсор на спутник (на телефоне — коснитесь) — справа появится список актов с рабочими гиперссылками на первоисточник и строкой о том, чем конкретно грозит нарушение.</p>
   <div class="atom-wrap">
-    <div class="atom-scene" id="atomScene">
-      <svg class="atom-bonds" id="atomBonds"></svg>
-      <div class="atom-inner" id="atomInner">
-        <div class="atom-core" id="atomCore">ОПОИБ</div>
+    <div class="atom-layout">
+      <div class="atom-scene-col">
+        <div class="atom-scene" id="atomScene">
+          <svg class="atom-bonds" id="atomBonds"></svg>
+          <div class="atom-inner" id="atomInner">
+            <div class="atom-core" id="atomCore">ОПОИБ</div>
+          </div>
+        </div>
+        <p class="atom-hint">тяните мышью, чтобы повернуть модель · наведите курсор на спутник, чтобы увидеть его законы и ответственность справа</p>
       </div>
+      <div class="atom-panel" id="atomPanel"><div class="ap-empty">Наведите курсор на объект защиты на модели (на телефоне — коснитесь) — здесь появится список нормативных актов и мера ответственности за их нарушение.</div></div>
     </div>
-    <p class="atom-hint">тяните мышью, чтобы повернуть модель · нажмите на спутник, чтобы увидеть его законы и ответственность</p>
-    <div class="atom-panel" id="atomPanel"><div class="ap-empty">Выберите объект защиты на модели — здесь появится список нормативных актов и мера ответственности за их нарушение.</div></div>
   </div>
   <p class="npa-map-caption">Модель наглядно показывает главный принцип дисциплины ОПОИБ: у каждого объекта защиты — свой правовой контур, и на практике специалист по ИБ применяет не «весь корпус законов сразу», а именно ту связку норм, которая относится к информации, обращающейся на его рабочем месте. Размер спутника при этом не подсказка «что важнее учить» по объёму, а честный вывод раздела 8 практикума («Ответственность за нарушения»): годы лишения свободы формально строже любого, даже многомиллионного административного штрафа, — поэтому значимый объект КИИ и коммерческая тайна на модели крупнее персональных данных, хотя оборотные штрафы за утечку ПДн выражаются в куда больших суммах.</p>
   <script>
@@ -763,6 +808,12 @@ setTimeout(animateProgress, 400);
       d.dataset.key = c.key;
       d.style.background = 'radial-gradient(circle at 34% 28%, rgba(255,255,255,.55), '+c.color+' 55%, '+c.color+' 100%)';
       d.textContent = c.short || c.title;
+      d.addEventListener('pointerenter', function(e){
+        // наведение раскрывает панель только для мыши/пера — на тачскрине
+        // hover не существует, там работает обычное касание (см. pointerup ниже)
+        if (dragging || e.pointerType === 'touch') return;
+        selectCluster(c.key);
+      });
       inner.appendChild(d);
       c._el = d;
 
@@ -901,7 +952,22 @@ setTimeout(animateProgress, 400);
   })();
   </script>
 
+  <p class="gate-intro">Ниже — проверка усвоения: шесть блоков по пять вопросов, по одному на каждый объект защиты из модели выше. В части вопросов специально заложены варианты-ловушки — похожие номера статей, близкие суммы штрафов, спутанные полномочия регуляторов. Результат считается сразу по всем 30 вопросам: чтобы открыть выбор должности, нужно набрать не меньше 60% (18 верных ответов из 30). Попыток пройти тест заново — сколько угодно, при каждой новой попытке порядок блоков, вопросов и вариантов ответа перемешивается заново.</p>
+  <div id="gateArea"></div>
+  <div id="gateNextArea" class="gate-next-wrap"></div>
+</div>
+
+<div id="orgScreen" class="start-screen" style="display:none;">
+  <div class="seal-big">🗂️</div>
+  <h1>Личное дело специалиста ИБ</h1>
+  <div id="coverIdPreview2"></div>
+  <div class="page-kicker">Страница 2 из 2 · Выбор должности</div>
+  <p class="lede">Нормативно-правовая база пройдена — теперь можно выбрать место работы. Ниже четыре вакантные должности специалиста по информационной безопасности в организациях разного профиля. Можно принять не одно назначение: каждая роль ведёт собственное личное дело и отдельную итоговую оценку, а если тесты по каждому из девяти этапов сданы, вы дорастаете по профстандарту до и.о. начальника отдела.</p>
   <div id="orgPickArea"></div>
+  <div class="btn-row" style="margin-top:8px; flex-wrap:wrap; gap:14px;">
+    <button class="reset-link" onclick="backToImmersion()">← Вернуться к модели и тесту по законодательству</button>
+    <button class="reset-link" onclick="exportSubmission()">💾 Сохранить дело для сдачи преподавателю</button>
+  </div>
 </div>
 
 <div id="app" class="app hidden-app">
@@ -918,6 +984,7 @@ setTimeout(animateProgress, 400);
     <div class="progress-wrap">
       <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
       <div class="progress-label" id="progressLabel">Пройдено этапов: 0 / 9</div>
+      <button class="btn btn-ghost" style="width:100%; justify-content:center; margin-top:10px; font-size:12.5px; padding:8px 10px;" onclick="exportSubmission()">💾 Сохранить дело для сдачи</button>
       <div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
         <button class="reset-link" onclick="backToGallery()">← Ко всем ролям</button>
         <button class="reset-link" onclick="resetAll()">Начать личное дело заново</button>
@@ -973,6 +1040,56 @@ var INFO_LABELS = {
   prof:'Профессиональная тайна (врачебная, адвокатская и т.п.)',
   kii:'Сведения о значимом объекте КИИ'
 };
+
+/* ===================== ДАННЫЕ: ТЕСТ-ШЛЮЗ «ПОГРУЖЕНИЕ В ЗАКОНОДАТЕЛЬСТВО» =====================
+   30 вопросов — по 5 на каждый из шести объектов защиты с 3D-модели выше. Во всех вопросах
+   правильный вариант записан первым (options[0]); при рендеринге порядок блоков, вопросов
+   и вариантов ответа внутри каждого вопроса перемешивается заново (см. buildGateSession). */
+var GATE_PASS = 18; // 60% от 30
+var GATE_BLOCKS = [
+  { key:'gostayna', title:'Государственная тайна', questions:[
+    {q:'Какой закон устанавливает институт государственной тайны в РФ?', options:['Закон РФ №5485-1 «О государственной тайне»','Федеральный закон №98-ФЗ «О коммерческой тайне»','Федеральный закон №152-ФЗ «О персональных данных»']},
+    {q:'Сколько уровней секретности сведений предусмотрено Законом РФ №5485-1?', options:['три: особой важности, совершенно секретно, секретно','два: секретно и несекретно','пять — по числу форм допуска']},
+    {q:'Каким актом установлены формы допуска к государственной тайне (1, 2, 3)?', options:['Постановлением Правительства РФ от 07.02.2024 №132','Указом Президента РФ №188 от 06.03.1997','Федеральным законом №98-ФЗ, ст. 11']},
+    {q:'Какая максимальная санкция предусмотрена ст. 283 УК РФ за разглашение государственной тайны при тяжких последствиях (ч. 2)?', options:['лишение свободы на срок до 7 лет','лишение свободы на срок до 10 лет','штраф до 200 000 рублей без лишения свободы']},
+    {q:'Кто из перечисленных — регулятор по вопросам государственной тайны наряду с ФСБ России?', options:['ФСТЭК России','Роскомнадзор','Банк России']}
+  ]},
+  { key:'sluzh', title:'Служебная тайна / ДСП', questions:[
+    {q:'Каким актом утверждён общий для всех отраслей перечень сведений конфиденциального характера, куда входит и служебная тайна?', options:['Указом Президента РФ №188 от 06.03.1997','Федеральным законом №149-ФЗ','Постановлением Правительства РФ №132']},
+    {q:'Какая пометка применяется к служебной информации ограниченного распространения?', options:['«Для служебного пользования» (ДСП)','«Совершенно секретно»','«Коммерческая тайна»']},
+    {q:'Какой максимальный штраф юридическому лицу предусмотрен ст. 13.14 КоАП РФ за разглашение информации с ограниченным доступом?', options:['до 200 000 рублей','до 20 000 000 рублей','до 5 000 000 рублей']},
+    {q:'Установлена ли в УК РФ отдельная статья именно за разглашение служебной тайны как таковой?', options:['нет — ответственность за сам факт разглашения ограничена административной (ст. 13.14 КоАП РФ)','да, ст. 283 УК РФ','да, ст. 183 УК РФ']},
+    {q:'Какой из шести объектов защиты в модели выше не имеет собственного профильного государственного регулятора, а подчиняется только сквозному перечню?', options:['служебная тайна / ДСП','персональные данные','государственная тайна']}
+  ]},
+  { key:'pdn', title:'Персональные данные', questions:[
+    {q:'Какой закон регулирует обработку персональных данных?', options:['Федеральный закон №152-ФЗ «О персональных данных»','Федеральный закон №149-ФЗ','Закон РФ №5485-1']},
+    {q:'Какой максимальный административный штраф юридическому лицу предусмотрен ст. 13.11 КоАП РФ (без учёта оборотного)?', options:['до 20 000 000 рублей','до 200 000 рублей','до 5 000 000 рублей']},
+    {q:'Что грозит оператору при повторной крупной утечке персональных данных?', options:['оборотный штраф в размере 1–3% от выручки','лишение свободы должностного лица до 10 лет','отзыв лицензии ФСТЭК России']},
+    {q:'Какой орган — основной надзорный регулятор по персональным данным?', options:['Роскомнадзор','ФСТЭК России','ФСБ России']},
+    {q:'Каким актом Банк России установил специальный режим защиты информации, включая персональные данные, для кредитных организаций?', options:['Положением Банка России №851-П','Приказом ФСТЭК России №21','Указом Президента РФ №646']}
+  ]},
+  { key:'komm', title:'Коммерческая тайна / ноу-хау', questions:[
+    {q:'Какой закон регулирует режим коммерческой тайны?', options:['Федеральный закон №98-ФЗ «О коммерческой тайне»','Закон РФ №5485-1','Федеральный закон №187-ФЗ']},
+    {q:'Что обязательно, чтобы режим коммерческой тайны считался установленным (ст. 6.1, 98-ФЗ)?', options:['нанесение на документ грифа «Коммерческая тайна» с указанием обладателя','устное распоряжение директора','регистрация сведений в Роспатенте']},
+    {q:'Какая максимальная санкция предусмотрена ст. 183 УК РФ (ч. 4) за незаконное разглашение коммерческой тайны с тяжкими последствиями?', options:['лишение свободы до 7 лет со штрафом до 5 000 000 рублей','лишение свободы до 10 лет без штрафа','только дисквалификация должностного лица на 3 года']},
+    {q:'Что обязательно для установления режима коммерческой тайны в отношении конкретного работника (ст. 11, 98-ФЗ)?', options:['ознакомление под роспись с перечнем сведений и условие о неразглашении в договоре','получение допуска по форме 2','прохождение проверки ФСБ России']},
+    {q:'Что прямо запрещено относить к коммерческой тайне согласно ст. 5 закона №98-ФЗ?', options:['сведения о нарушениях законодательства РФ и фактах привлечения к ответственности за эти нарушения','исходный код программного продукта компании','условия договоров с ключевыми поставщиками']}
+  ]},
+  { key:'kii', title:'Значимый объект КИИ', questions:[
+    {q:'Какой закон регулирует безопасность значимых объектов критической информационной инфраструктуры?', options:['Федеральный закон №187-ФЗ','Федеральный закон №152-ФЗ','Федеральный закон №149-ФЗ']},
+    {q:'Какая максимальная санкция предусмотрена ст. 274.1 УК РФ при отягчающих обстоятельствах — и как она соотносится с остальными пятью объектами защиты?', options:['лишение свободы до 10 лет — самая строгая санкция среди всех шести объектов','лишение свободы до 7 лет — столько же, сколько за гостайну','штраф до 500 000 рублей без лишения свободы']},
+    {q:'Что обязан сделать субъект КИИ в отношении своих объектов по 187-ФЗ?', options:['провести категорирование и направить сведения во ФСТЭК России','получить допуск по форме 1 к государственной тайне','зарегистрировать товарный знак в Роспатенте']},
+    {q:'Каким документом с 2021 года задаётся единая методология оценки угроз для значимых объектов КИИ?', options:['Методикой оценки угроз безопасности информации, утв. ФСТЭК России 05.02.2021','ГОСТ Р ИСО/МЭК 27001','Доктриной информационной безопасности РФ']},
+    {q:'Кто, помимо ФСТЭК России, участвует в реагировании на компьютерные инциденты на значимых объектах КИИ?', options:['НКЦКИ / ГосСОПКА','Роскомнадзор','Банк России']}
+  ]},
+  { key:'general', title:'Общая правовая рамка', questions:[
+    {q:'Какой закон вводит общий понятийный аппарат — «информация», «обладатель информации», «конфиденциальность»?', options:['Федеральный закон №149-ФЗ','Федеральный закон №98-ФЗ','Федеральный закон №187-ФЗ']},
+    {q:'Каким актом утверждена Доктрина информационной безопасности Российской Федерации?', options:['Указом Президента РФ №646 от 05.12.2016','Указом Президента РФ №188 от 06.03.1997','Постановлением Правительства РФ №79']},
+    {q:'Каким актом закреплён единый для всех отраслей перечень сведений конфиденциального характера?', options:['Указом Президента РФ №188 от 06.03.1997','Законом РФ №5485-1','Федеральным законом №149-ФЗ']},
+    {q:'Какая компетенция ФГОС ВО 10.04.01 напрямую соответствует разработке организационно-распорядительных документов по информационной безопасности?', options:['ОПК-3','УК-4','ОПК-5']},
+    {q:'Что в модели «атома ОПОИБ» определяет размер спутника — объекта защиты?', options:['тяжесть предусмотренной законом ответственности (годы лишения свободы и штрафы), а не количество законов','количество нормативных актов, перечисленных для этого объекта','порядок, в котором объект упоминается в 149-ФЗ']}
+  ]}
+];
 
 /* ===================== ДАННЫЕ: ЭТАПЫ ===================== */
 var SECTIONS = {
@@ -1305,18 +1422,46 @@ var STORAGE_KEY = 'opmoib-praktikum-v1';
 var state = null;
 
 function defaultState(){
-  return { orgId:null, progress:{}, student:{ name:'', group:'', photo:null } };
+  return { orgId:null, progress:{}, student:{ name:'', group:'', photo:null }, gate:{ passed:false, bestScore:0 } };
 }
 function studentInfo(){
   return (state && state.student) ? state.student : { name:'', group:'', photo:null };
 }
-function idCardHtml(sizeClass, photo, name, group){
+function idCardHtml(sizeClass, photo, name, group, watermark){
   var thumb = photo
     ? '<div class="id-thumb"><img src="' + photo + '" alt=""></div>'
     : '<div class="id-thumb">🙂</div>';
+  var wmHtml = watermark ? '<div class="id-watermark">' + esc(watermark) + '</div>' : '';
   return '<div class="' + sizeClass + '">' + thumb +
     '<div><div class="id-name">' + esc(name || 'ФИО не указано') + '</div>' +
-    '<div class="id-group">' + (group ? 'группа ' + esc(group) : '') + '</div></div></div>';
+    '<div class="id-group">' + (group ? 'группа ' + esc(group) : '') + '</div>' + wmHtml + '</div></div>';
+}
+/* ===================== ВОДЯНОЙ ЗНАК ЭКЗЕМПЛЯРА (мягкая метка подлинности) =====================
+   Не защита в криптографическом смысле — при желании любой студент через консоль
+   браузера подменит и её. Задача скромнее: если «отличник» просто передаст файл
+   вместе с localStorage другому человеку и тот через консоль перепишет ФИО, метка
+   (случайный id + время самого первого оформления обложки) останется прежней —
+   значит, у двух «разных» распечаток обнаружится один и тот же id экземпляра, и
+   это будет видно невооружённым глазом на самой распечатке, без каких-либо
+   специальных проверок. Метка генерируется один раз — при первом вводе ФИО — и
+   дальше не меняется, пока не будет выполнен полный сброс (resetAll).*/
+function genSessionId(){
+  try{
+    if (window.crypto && window.crypto.randomUUID) return window.crypto.randomUUID().replace(/-/g,'').slice(0,8).toUpperCase();
+  }catch(e){}
+  return Math.random().toString(36).slice(2,10).toUpperCase();
+}
+function formatWatermarkStamp(iso){
+  try{
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return '';
+    return d.toLocaleDateString('ru-RU') + ' ' + d.toLocaleTimeString('ru-RU', { hour:'2-digit', minute:'2-digit' });
+  }catch(e){ return ''; }
+}
+function watermarkText(stu){
+  if (!stu || !stu.sessionId) return '';
+  var stamp = formatWatermarkStamp(stu.firstSubmittedAt);
+  return 'ID экземпляра ' + stu.sessionId + (stamp ? ' · оформлено ' + stamp : '');
 }
 function loadState(){
   try{
@@ -1331,6 +1476,14 @@ function loadState(){
           delete s.stages; delete s.current;
         }
         if (!s.student) s.student = { name:'', group:'', photo:null };
+        // ретроактивная метка для дел, оформленных до появления водяного знака —
+        // здесь она получит текущее время открытия файла, а не время реального
+        // оформления обложки (то уже не восстановить), но дальше не меняется
+        if (s.student.name && !s.student.sessionId){
+          s.student.sessionId = genSessionId();
+          s.student.firstSubmittedAt = new Date().toISOString();
+        }
+        if (!s.gate) s.gate = { passed:false, bestScore:0 };
         return s;
       }
     }
@@ -1409,27 +1562,44 @@ var RESET_CODE = '00000';
 var devBuffer = '';
 function activateDevMode(){
   if (!state.student || !state.student.name){
-    state.student = { name:'Демонстрационный режим', group:'DEV', photo:null };
+    state.student = { name:'Демонстрационный режим', group:'DEV', photo:null, sessionId: genSessionId(), firstSubmittedAt: new Date().toISOString() };
     coverPhotoDataUrl = null;
   }
+  // итоговый балл держим на уровне 75% (не выше — иначе округление overallScore()
+  // толкает итог в «Отлично», см. gradeFor). Math.round по каждому этапу отдельно
+  // этого не гарантирует: этапы с 5 вопросами округляют 3.75 → 4 (80%), и сумма
+  // по всем этапам съезжает на 76%. Поэтому считаем цель по всей базе вопросов
+  // сразу через floor (гарантированно ≤75%), а затем методом наибольших остатков
+  // раскладываем её по этапам, чтобы отдельные этапы не отставали сильнее нужного.
+  var totalQ = 0;
+  STAGES.forEach(function(s){ totalQ += s.test.questions.length; });
+  var targetGot = Math.floor(totalQ * 0.75);
+  var base = STAGES.map(function(s){ return Math.floor(s.test.questions.length * targetGot / totalQ); });
+  var used = base.reduce(function(a,b){ return a + b; }, 0);
+  var remainders = STAGES.map(function(s, i){ return { i:i, r:(s.test.questions.length * targetGot / totalQ) - base[i] }; });
+  remainders.sort(function(a,b){ return b.r - a.r; });
+  for (var k = 0; k < targetGot - used; k++){ base[remainders[k].i]++; }
+
   ORGS.forEach(function(org){
     var prog = progressFor(org.id);
-    STAGES.forEach(function(s){
-      // ровно 75% по каждому этапу — совокупный итог соответствует оценке «Хорошо»
-      var goodScore = Math.round(s.test.questions.length * 0.75);
+    STAGES.forEach(function(s, si){
+      var goodScore = base[si];
       prog.stages[s.id] = { taskDone:true, taskAnswers:null, testPassed:true, testScore: goodScore, testAnswers:null };
     });
     prog.current = TOTAL_STAGES;
   });
   state.orgId = null;
+  state.gate = { passed:true, bestScore:30 };
   saveState();
   document.getElementById('coverScreen').style.display = 'none';
   document.getElementById('app').classList.add('hidden-app');
-  document.getElementById('startScreen').style.display = 'block';
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('orgScreen').style.display = 'block';
   document.getElementById('coverIdPreview').innerHTML = idCardHtml('id-card', state.student.photo, state.student.name, state.student.group);
+  document.getElementById('coverIdPreview2').innerHTML = idCardHtml('id-card', state.student.photo, state.student.name, state.student.group);
   renderGallery();
   window.scrollTo(0,0);
-  try{ console.log('[режим разработчика] все роли оформлены на оценку «Хорошо»'); }catch(e){}
+  try{ console.log('[режим разработчика] все роли оформлены на оценку «Хорошо», тест-шлюз пройден'); }catch(e){}
 }
 function activateResetMode(){
   try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
@@ -1497,12 +1667,158 @@ function submitCover(){
     fb.innerHTML = '<div class="feedback warn">Укажите ФИО — без него личное дело не оформить.</div>';
     return;
   }
-  state.student = { name: name, group: group, photo: coverPhotoDataUrl };
+  var prevSessionId = (state.student && state.student.sessionId) || genSessionId();
+  var prevFirstAt = (state.student && state.student.firstSubmittedAt) || new Date().toISOString();
+  state.student = { name: name, group: group, photo: coverPhotoDataUrl, sessionId: prevSessionId, firstSubmittedAt: prevFirstAt };
   saveState();
   document.getElementById('coverScreen').style.display = 'none';
-  document.getElementById('startScreen').style.display = 'block';
   document.getElementById('coverIdPreview').innerHTML = idCardHtml('id-card', state.student.photo, state.student.name, state.student.group);
+  document.getElementById('coverIdPreview2').innerHTML = idCardHtml('id-card', state.student.photo, state.student.name, state.student.group);
+  if (gatePassed()){
+    document.getElementById('orgScreen').style.display = 'block';
+    renderGallery();
+  } else {
+    document.getElementById('startScreen').style.display = 'block';
+    renderGate();
+  }
+}
+
+/* ===================== ТЕСТ-ШЛЮЗ: «ПОГРУЖЕНИЕ В ЗАКОНОДАТЕЛЬСТВО РФ» ===================== */
+function gatePassed(){ return !!(state.gate && state.gate.passed); }
+
+function shuffleArr(a){
+  var arr = a.slice();
+  for (var i = arr.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+  }
+  return arr;
+}
+
+var gateSession = null; // текущая (перемешанная заново при каждом показе) попытка
+
+function buildGateSession(){
+  return shuffleArr(GATE_BLOCKS).map(function(b){
+    var qs = shuffleArr(b.questions.map(function(q, qi){ return { q: q, qi: qi }; })).map(function(entry){
+      var q = entry.q;
+      var correctIdx = (q.correct !== undefined ? q.correct : 0);
+      var order = shuffleArr(q.options.map(function(_, i){ return i; }));
+      var options = order.map(function(i){ return q.options[i]; });
+      // bkey+qi — стабильный id вопроса (не зависит от перемешивания), нужен
+      // для внешней сверки: экспорт хранит именно текст выбранного варианта,
+      // привязанный к этому id, а не позицию в перемешанном списке.
+      return { q: q.q, options: options, correct: order.indexOf(correctIdx), bkey: b.key, qi: entry.qi };
+    });
+    return { key: b.key, title: b.title, questions: qs };
+  });
+}
+
+function renderGate(){
+  gateSession = buildGateSession();
+  var area = document.getElementById('gateArea');
+  var html = '';
+  var gi = 0;
+  gateSession.forEach(function(block){
+    html += '<div class="gate-block"><div class="gate-block-head"><h4>' + esc(block.title) + '</h4>' +
+      '<span class="gate-block-score" id="gbs-' + block.key + '"></span></div>' +
+      '<div class="gate-block-sub">5 вопросов</div>';
+    block.questions.forEach(function(q){
+      var qi = gi++;
+      html += '<div class="test-q" data-gi="' + qi + '"><div class="qtext">' + (qi+1) + '. ' + esc(q.q) + '</div><div class="opts">';
+      q.options.forEach(function(opt, oi){
+        html += '<label><input type="radio" name="gq' + qi + '" value="' + oi + '">' + esc(opt) + '</label>';
+      });
+      html += '</div></div>';
+    });
+    html += '</div>';
+  });
+  html += '<div id="gateResult"></div>' +
+    '<div class="btn-row no-print"><button class="btn" onclick="submitGate()">' + (gatePassed() ? 'Пройти тест ещё раз' : 'Сдать тест') + '</button></div>';
+  area.innerHTML = html;
+  renderGateNext();
+}
+
+function submitGate(){
+  var total = 0;
+  var gi = 0;
+  var rawAnswers = [];
+  gateSession.forEach(function(block){
+    var got = 0;
+    block.questions.forEach(function(q){
+      var qi = gi++;
+      var picked = document.querySelector('input[name="gq' + qi + '"]:checked');
+      var wrap = document.querySelector('.test-q[data-gi="' + qi + '"]');
+      var labels = wrap.querySelectorAll('label');
+      var pickedIdx = picked ? parseInt(picked.value,10) : null;
+      // здесь, в отличие от тестов внутри должности (renderTest/submitTest), нарочно
+      // НЕ подсвечивается верный вариант, если студент ответил неправильно или не
+      // ответил вовсе, — иначе достаточно один раз нажать «Сдать тест» вслепую,
+      // чтобы увидеть все 30 правильных ответов зелёным и тут же пересдать на 30/30.
+      // Отмечается только собственный выбор студента: зелёным — если он верный,
+      // красным — если нет; какой вариант правильный, при ошибке не раскрывается.
+      labels.forEach(function(lab, oi){
+        if (pickedIdx === oi) lab.classList.add(oi === q.correct ? 'is-correct' : 'is-wrong');
+      });
+      var isCorrect = pickedIdx === q.correct;
+      if (isCorrect){ got++; total++; }
+      // сырой ответ хранится по стабильному id (bkey+qi) и текстом выбранного
+      // варианта — это то, что позже сверяется с эталонным Excel независимо
+      // от практикума, поэтому self-report (isCorrect) тут не при чём
+      rawAnswers.push({
+        id: 'gate:' + q.bkey + ':' + q.qi,
+        question: q.q,
+        picked: (pickedIdx !== null ? q.options[pickedIdx] : null),
+        selfReportedCorrect: isCorrect
+      });
+    });
+    var badge = document.getElementById('gbs-' + block.key);
+    if (badge){
+      badge.textContent = got + ' / ' + block.questions.length;
+      badge.className = 'gate-block-score ' + (got >= 3 ? 'is-pass' : 'is-fail');
+    }
+  });
+
+  var passed = total >= GATE_PASS;
+  if (!state.gate) state.gate = { passed:false, bestScore:0 };
+  var isNewBest = total >= (state.gate.bestScore || 0);
+  state.gate.bestScore = Math.max(state.gate.bestScore || 0, total);
+  if (passed) state.gate.passed = true;
+  if (isNewBest) state.gate.rawAnswers = rawAnswers;
+  saveState();
+
+  var resultEl = document.getElementById('gateResult');
+  resultEl.innerHTML = '<div class="score-banner ' + (passed ? 'pass' : 'fail') + '">' +
+    'Результат: ' + total + ' / 30' + (passed ? ' — 60% пройдены, выбор должности открыт.' : ' — нужно набрать не меньше ' + GATE_PASS + ' из 30. Попробуйте ещё раз — вопросы и варианты ответа перемешаются заново.') +
+  '</div>';
+  renderGateNext();
+  setTimeout(function(){
+    var y = resultEl.getBoundingClientRect().top + window.scrollY - 90;
+    window.scrollTo({ top: y, behavior:'smooth' });
+  }, 10);
+}
+
+function renderGateNext(){
+  var area = document.getElementById('gateNextArea');
+  if (!area) return;
+  if (gatePassed()){
+    area.innerHTML = '<div class="btn-row"><button class="btn" onclick="goToOrgScreen()">Далее — выбор должности →</button></div>';
+  } else {
+    area.innerHTML = '<div class="gate-lock-note">Выбор должности откроется после того, как результат по всем 30 вопросам составит не меньше 60% (18 верных ответов из 30).</div>';
+  }
+}
+
+function goToOrgScreen(){
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('orgScreen').style.display = 'block';
   renderGallery();
+  window.scrollTo(0,0);
+}
+
+function backToImmersion(){
+  document.getElementById('orgScreen').style.display = 'none';
+  document.getElementById('startScreen').style.display = 'block';
+  renderGate();
+  window.scrollTo(0,0);
 }
 
 /* ===================== START SCREEN (галерея ролей) ===================== */
@@ -1540,7 +1856,7 @@ function selectRole(orgId){
   enterApp();
 }
 function enterApp(){
-  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('orgScreen').style.display = 'none';
   document.getElementById('app').classList.remove('hidden-app');
   render();
 }
@@ -1548,7 +1864,7 @@ function backToGallery(){
   state.orgId = null;
   saveState();
   document.getElementById('app').classList.add('hidden-app');
-  document.getElementById('startScreen').style.display = 'block';
+  document.getElementById('orgScreen').style.display = 'block';
   renderGallery();
   window.scrollTo(0,0);
 }
@@ -1559,7 +1875,10 @@ function resetAll(){
   coverPhotoDataUrl = null;
   document.getElementById('app').classList.add('hidden-app');
   document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('orgScreen').style.display = 'none';
   document.getElementById('orgPickArea').innerHTML = '';
+  document.getElementById('gateArea').innerHTML = '';
+  document.getElementById('gateNextArea').innerHTML = '';
   document.getElementById('fioInput').value = '';
   document.getElementById('groupInput').value = '';
   removePhoto();
@@ -1904,6 +2223,7 @@ function printStageResult(stageId){
         'Студент: <b>' + esc(stu.name || 'ФИО не указано') + '</b>' + groupLine + '<br>' +
         'Дата: ' + dateStr +
       '</div>' +
+      (watermarkText(stu) ? '<div style="font-family:\'PT Mono\',monospace; font-size:10px; color:#888; margin:-8px 0 14px;">' + esc(watermarkText(stu)) + '</div>' : '') +
       notice +
       '<table class="sp-print-table"><thead><tr>' +
         '<th>№</th><th>Вопрос</th><th>Ваш ответ</th><th>Правильный ответ</th><th>Верно</th><th>Неверно</th>' +
@@ -1934,7 +2254,7 @@ function renderFinal(){
     var grade = gradeFor(score.pct);
     var stu = studentInfo();
     html += '<div class="final-cert no-print-outer"><h2>Личное дело закрыто</h2>' +
-      idCardHtml('cert-id', stu.photo, stu.name, stu.group) +
+      idCardHtml('cert-id', stu.photo, stu.name, stu.group, watermarkText(stu)) +
       '<div class="pos">и.о. начальника отдела защиты информации</div>' +
       '<p>' + esc(org.name) + ' — практикум по дисциплине «Организационно-правовое обеспечение информационной безопасности» пройден полностью, ' + TOTAL_STAGES + ' из ' + TOTAL_STAGES + ' этапов зачтено.</p>' +
       '<div class="grade-line">Суммарный балл по тестам: ' + score.got + ' / ' + score.max + ' (' + score.pct + '%) — итоговая оценка: <b>' + grade + '</b></div>' +
@@ -1961,6 +2281,75 @@ function render(){
   document.getElementById('mainPanel').innerHTML = html;
 }
 
+/* ===================== СДАЧА ДЕЛА ПРЕПОДАВАТЕЛЮ (экспорт для внешней проверки) =====================
+   Выгружает не самоотчёт («сдано/не сдано»), а то, что студент реально выбирал —
+   текст выбранного варианта по каждому вопросу, привязанный к стабильному id
+   (gate:<блок>:<номер> или stage:<этап>:<номер>, не зависит от перемешивания
+   теста-шлюза). Файл предназначен для сверки во внешнем инструменте проверки
+   с эталонным Excel преподавателя — самоотчёт в файле есть только для
+   информации, при сверке он в расчёт не берётся. */
+function exportSubmission(){
+  var stu = studentInfo();
+  var orgsData = [];
+  var progress = state.progress || {};
+  Object.keys(progress).forEach(function(orgId){
+    var prog = progress[orgId];
+    var org = ORGS.filter(function(o){ return o.id === orgId; })[0];
+    var stagesData = [];
+    STAGES.forEach(function(s){
+      var st = prog.stages && prog.stages[s.id];
+      if (!st || (!st.taskDone && !st.testAnswers)) return;
+      var answers = (st.testAnswers || []).map(function(pickedIdx, qi){
+        var q = s.test.questions[qi];
+        return {
+          id: 'stage:' + s.id + ':' + qi,
+          question: q.q,
+          picked: (pickedIdx !== null && pickedIdx !== undefined) ? q.options[pickedIdx] : null,
+          selfReportedCorrect: pickedIdx === q.correct
+        };
+      });
+      stagesData.push({
+        stageId: s.id,
+        title: s.title,
+        taskDone: !!st.taskDone,
+        selfReportedTestScore: st.testScore || 0,
+        selfReportedTestPassed: !!st.testPassed,
+        answers: answers
+      });
+    });
+    orgsData.push({ orgId: orgId, orgName: org ? org.name : orgId, stages: stagesData });
+  });
+
+  var payload = {
+    format: 'opmoib-submission-v1',
+    exportedAt: new Date().toISOString(),
+    student: {
+      name: stu.name || '',
+      group: stu.group || '',
+      sessionId: stu.sessionId || null,
+      firstSubmittedAt: stu.firstSubmittedAt || null
+    },
+    gate: {
+      selfReportedPassed: !!(state.gate && state.gate.passed),
+      selfReportedBestScore: (state.gate && state.gate.bestScore) || 0,
+      answers: (state.gate && state.gate.rawAnswers) || []
+    },
+    orgs: orgsData
+  };
+
+  var json = JSON.stringify(payload, null, 2);
+  var blob = new Blob([json], { type:'application/json' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  var safeName = (stu.name || 'student').replace(/[^\wа-яёА-ЯЁ\- ]+/g, '').trim().replace(/\s+/g, '_') || 'student';
+  a.href = url;
+  a.download = 'сдача_' + safeName + '_' + (stu.sessionId || 'noid') + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+}
+
 /* expose to inline handlers */
 window.selectRole = selectRole;
 window.enterApp = enterApp;
@@ -1976,11 +2365,16 @@ window.nextStage = nextStage;
 window.onPhotoSelected = onPhotoSelected;
 window.removePhoto = removePhoto;
 window.submitCover = submitCover;
+window.submitGate = submitGate;
+window.goToOrgScreen = goToOrgScreen;
+window.backToImmersion = backToImmersion;
+window.exportSubmission = exportSubmission;
 
 /* ===================== INIT ===================== */
 state = loadState();
 if (!state.student) state.student = { name:'', group:'', photo:null };
 if (!state.progress) state.progress = {};
+if (!state.gate) state.gate = { passed:false, bestScore:0 };
 var hasStudent = !!(state.student && state.student.name);
 if (hasStudent){
   document.getElementById('coverScreen').style.display = 'none';
@@ -1989,12 +2383,19 @@ if (hasStudent){
 if (state.orgId){
   document.getElementById('coverScreen').style.display = 'none';
   document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('orgScreen').style.display = 'none';
   document.getElementById('app').classList.remove('hidden-app');
   render();
+} else if (hasStudent && gatePassed()){
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('orgScreen').style.display = 'block';
+  document.getElementById('coverIdPreview').innerHTML = idCardHtml('id-card', state.student.photo, state.student.name, state.student.group);
+  document.getElementById('coverIdPreview2').innerHTML = idCardHtml('id-card', state.student.photo, state.student.name, state.student.group);
+  renderGallery();
 } else if (hasStudent){
   document.getElementById('startScreen').style.display = 'block';
   document.getElementById('coverIdPreview').innerHTML = idCardHtml('id-card', state.student.photo, state.student.name, state.student.group);
-  renderGallery();
+  renderGate();
 }
 })();
 </script>
