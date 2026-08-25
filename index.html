@@ -211,24 +211,60 @@
   .start-screen h1{font-size:30px; margin:10px 0 6px;}
   .start-screen p.lede{color:var(--ink-dim); font-size:15.5px; margin-bottom:26px;}
 
-  /* ---------- NPA mindmap (карта нормативно-правовой базы) ---------- */
+  /* ---------- NPA atom model (карта нормативно-правовой базы) ---------- */
   .npa-map-intro{color:var(--ink-dim); font-size:14.5px; margin:0 0 12px; max-width:900px;}
-  .npa-map-outer{
-    position:relative; left:50%; transform:translateX(-50%);
-    width:96vw; max-width:1900px; margin:0 0 10px;
-  }
-  .npa-map-scroll{
-    overflow-x:auto; overflow-y:hidden; border:1px solid var(--folder-line);
-    background:var(--folder); border-radius:var(--radius); box-shadow:var(--shadow);
-    padding:6px;
-  }
-  .npa-map-scroll .npa-map-inner{min-width:1360px;}
-  .npa-map-scroll svg{width:100%; height:auto; display:block;}
   .npa-map-caption{
     color:var(--ink-dim); font-size:13.5px; line-height:1.5; max-width:900px;
-    margin:12px 0 26px;
+    margin:14px 0 26px;
   }
   .npa-map-caption b{color:var(--ink);}
+  .atom-wrap{margin:0 0 6px;}
+  .atom-scene{
+    position:relative; height:520px; perspective:1750px;
+    display:flex; align-items:center; justify-content:center;
+    cursor:grab; touch-action:none; user-select:none;
+    border:1px solid var(--folder-line); background:var(--folder); border-radius:var(--radius); box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  .atom-scene.dragging{cursor:grabbing;}
+  @media (max-width:560px){
+    .atom-scene{ height:400px; }
+    .atom-moon{ font-size:9px; padding:3px; }
+  }
+  .atom-bonds{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:1;}
+  .atom-inner{position:relative; width:0; height:0; transform-style:preserve-3d; z-index:2;}
+  .atom-core{
+    position:absolute; left:0; top:0; width:122px; height:122px;
+    border-radius:50%; display:flex; align-items:center; justify-content:center;
+    background: radial-gradient(circle at 34% 28%, #F3D998, var(--accent) 55%, #6b4610 100%);
+    box-shadow: 0 10px 26px rgba(0,0,0,.30), inset -10px -10px 26px rgba(0,0,0,.28), inset 7px 7px 18px rgba(255,255,255,.30);
+    font-family:"PT Serif",Georgia,serif; font-weight:700; font-size:17px; color:var(--accent-ink);
+    letter-spacing:.4px; text-align:center;
+  }
+  .atom-moon{
+    position:absolute; left:0; top:0; border-radius:50%; box-sizing:border-box;
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    cursor:pointer; padding:5px; line-height:1.14; overflow:hidden;
+    overflow-wrap:break-word;
+    font-family:"PT Sans",Arial,sans-serif; font-weight:700; font-size:11.5px; color:var(--accent-ink);
+    box-shadow: 0 7px 16px rgba(0,0,0,.25), inset -6px -6px 14px rgba(0,0,0,.25), inset 4px 4px 12px rgba(255,255,255,.25);
+  }
+  .atom-moon.is-active{ box-shadow: 0 0 0 3px var(--ink), 0 7px 16px rgba(0,0,0,.25), inset -6px -6px 14px rgba(0,0,0,.25), inset 4px 4px 12px rgba(255,255,255,.25); }
+  .atom-hint{ text-align:center; font-size:12px; color:var(--ink-dim); font-family:"PT Mono",monospace; margin:10px 0 0; line-height:1.6; }
+  .atom-panel{
+    margin-top:14px; border:1px solid var(--folder-line); background:var(--folder); border-radius:var(--radius);
+    padding:15px 17px; box-shadow:var(--shadow); min-height:56px;
+  }
+  .atom-panel .ap-empty{color:var(--ink-dim); font-size:13.5px;}
+  .atom-panel h3{font-family:"PT Serif",serif; margin:0 0 4px; font-size:18px;}
+  .atom-panel .ap-meta{color:var(--ink-dim); font-size:12.5px; margin-bottom:11px; line-height:1.5;}
+  .atom-panel .ap-meta b{color:var(--ink);}
+  .law-item{
+    display:block; border:1px solid var(--folder-line); background:var(--paper); border-radius:8px;
+    padding:9px 12px; margin-bottom:8px; text-decoration:none; color:var(--ink); font-size:13.5px;
+  }
+  .law-item .law-domain{display:block; font-family:"PT Mono",monospace; font-size:11px; color:var(--ink-dim); margin-top:4px;}
+  .law-item.resp-item{background:var(--paper); border-color:var(--ink-dim); border-width:1.5px; font-weight:600;}
   .org-card{
     border:1px solid var(--folder-line); background:var(--folder); border-radius:var(--radius);
     padding:16px 18px; margin-bottom:22px;
@@ -635,133 +671,235 @@ setTimeout(animateProgress, 400);
   <div id="coverIdPreview"></div>
   <p class="lede">Практикум по дисциплине «Организационно-правовое обеспечение информационной безопасности» (10.04.01, магистратура). Ниже — четыре вакантные должности специалиста по информационной безопасности в организациях разного профиля. Выберите одну (можно пройти и не одну): каждая ведёт собственное личное дело и собственную итоговую оценку, а к концу практикума, если тесты по каждому этапу сданы, вы дорастаете по профстандарту до и.о. начальника отдела.</p>
 
-  <p class="npa-map-intro">Прежде чем выбрать место работы, посмотрите на карту ниже: она показывает, из чего вообще складывается нормативно-правовая база вашей будущей должности. В центре каждого кластера — объект защиты информации (гостайна, служебная тайна, персональные данные, коммерческая тайна, значимый объект КИИ и сквозная правовая рамка), а вокруг — конкретные законы, указы, приказы и ГОСТы, которые обязан знать специалист по ИБ, работающий с этим объектом. Названия актов — рабочие гиперссылки на первоисточник (наведите курсор, чтобы увидеть адрес, или откройте в новой вкладке).</p>
-  <div class="npa-map-outer">
-    <div class="npa-map-scroll"><div class="npa-map-inner">
-<svg viewBox="0 0 2832 1690" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-labelledby="npaMapTitle npaMapDesc" style="width:100%;height:auto;display:block;">
-<title id="npaMapTitle">Карта нормативно-правовой базы дисциплины ОПОИБ</title>
-<desc id="npaMapDesc">Шесть объектов защиты информации, вокруг каждого — нормативные акты, которые студент обязан знать на рабочем месте. Названия актов — рабочие гиперссылки на первоисточники.</desc>
-<defs>
-  <filter id="npaShadow" x="-40%" y="-40%" width="180%" height="180%">
-    <feDropShadow dx="0" dy="1.5" stdDeviation="3.5" flood-color="#000000" flood-opacity="0.14"/>
-  </filter>
-</defs>
-<rect x="0" y="0" width="2832" height="1690" fill="var(--paper,#FBF7EE)"/>
-<rect x="18" y="18" width="2796" height="1654" rx="14" fill="none" stroke="var(--folder-line,#E3D5B4)" stroke-width="1.5"/>
-
-<text x="1416.0" y="66" text-anchor="middle" font-family="PT Serif, Georgia, serif" font-size="27" font-weight="700" fill="var(--ink,#221C13)">🗂️ Карта нормативно-правовой базы дисциплины ОПОИБ</text>
-<text x="1416.0" y="100" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="15.5" fill="var(--ink-dim,#6B6152)">Пять объектов защиты информации + общая правовая рамка — и нормативные акты, которые нужно знать и соблюдать на рабочем месте</text>
-<text x="1416.0" y="126" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="11.5" fill="var(--ink-dim,#6B6152)">по данным аналитической справки от 24.08.2026 · названия актов — рабочие ссылки на первоисточник (наведите или откройте в новой вкладке)</text>
-<path d="M 490.0 540.0 C 490.0 515.0 490.0 315.0 490.0 290.0" fill="none" stroke="var(--danger,#A23A31)" stroke-width="2.1" stroke-linecap="round"/>
-<path d="M 490.0 540.0 C 490.0 565.0 490.0 765.0 490.0 790.0" fill="none" stroke="var(--danger,#A23A31)" stroke-width="2.1" stroke-linecap="round"/>
-<path d="M 1416.0 540.0 C 1416.0 515.0 1416.0 315.0 1416.0 290.0" fill="none" stroke="var(--accent,#8C5E17)" stroke-width="2.1" stroke-linecap="round"/>
-<path d="M 2342.0 540.0 C 2342.0 515.0 2342.0 315.0 2342.0 290.0" fill="none" stroke="var(--accent-2,#28575D)" stroke-width="2.1" stroke-linecap="round"/>
-<path d="M 2342.0 540.0 C 2412.6 540.0 2553.8 540.0 2624.4 540.0" fill="none" stroke="var(--accent-2,#28575D)" stroke-width="2.1" stroke-linecap="round"/>
-<path d="M 2342.0 540.0 C 2342.0 565.0 2342.0 765.0 2342.0 790.0" fill="none" stroke="var(--accent-2,#28575D)" stroke-width="2.1" stroke-linecap="round"/>
-<path d="M 2342.0 540.0 C 2268.7 540.0 2122.0 540.0 2048.7 540.0" fill="none" stroke="var(--accent-2,#28575D)" stroke-width="2.1" stroke-linecap="round"/>
-<path d="M 490.0 1280.0 C 490.0 1255.0 490.0 1055.0 490.0 1030.0" fill="none" stroke="var(--warn,#A85A22)" stroke-width="2.1" stroke-linecap="round"/>
-<path d="M 1416.0 1280.0 C 1416.0 1255.0 1416.0 1055.0 1416.0 1030.0" fill="none" stroke="var(--ok,#3E7A4C)" stroke-width="2.1" stroke-linecap="round"/>
-<path d="M 1416.0 1280.0 C 1485.9 1296.1 1625.6 1425.2 1695.5 1441.3" fill="none" stroke="var(--ok,#3E7A4C)" stroke-width="2.1" stroke-linecap="round"/>
-<path d="M 1416.0 1280.0 C 1342.5 1297.0 1195.5 1432.8 1122.0 1449.8" fill="none" stroke="var(--ok,#3E7A4C)" stroke-width="2.1" stroke-linecap="round"/>
-<path d="M 2342.0 1280.0 C 2342.0 1255.0 2342.0 1055.0 2342.0 1030.0" fill="none" stroke="var(--ink-dim,#6B6152)" stroke-width="2.1" stroke-linecap="round"/>
-<path d="M 2342.0 1280.0 C 2416.2 1297.1 2564.8 1434.3 2639.0 1451.5" fill="none" stroke="var(--ink-dim,#6B6152)" stroke-width="2.1" stroke-linecap="round"/>
-<path d="M 2342.0 1280.0 C 2269.6 1296.7 2124.7 1430.5 2052.3 1447.3" fill="none" stroke="var(--ink-dim,#6B6152)" stroke-width="2.1" stroke-linecap="round"/>
-<g filter="url(#npaShadow)"><rect x="340.0" y="492.0" width="300.0" height="96.0" rx="12" ry="12" fill="var(--danger,#A23A31)" stroke="none" stroke-width="1.6"/></g>
-<g filter="url(#npaShadow)"><rect x="350.8" y="249.0" width="278.5" height="82.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--danger,#A23A31)" stroke-width="1.6"/></g>
-<g filter="url(#npaShadow)"><rect x="321.6" y="749.0" width="336.9" height="82.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--danger,#A23A31)" stroke-width="1.6"/></g>
-<g filter="url(#npaShadow)"><rect x="1266.0" y="495.0" width="300.0" height="90.0" rx="12" ry="12" fill="var(--accent,#8C5E17)" stroke="none" stroke-width="1.6"/></g>
-<g filter="url(#npaShadow)"><rect x="1240.2" y="240.0" width="351.5" height="100.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--accent,#8C5E17)" stroke-width="1.6"/></g>
-<g filter="url(#npaShadow)"><rect x="2192.0" y="477.0" width="300.0" height="126.0" rx="12" ry="12" fill="var(--accent-2,#28575D)" stroke="none" stroke-width="1.6"/></g>
-<g filter="url(#npaShadow)"><rect x="2210.1" y="249.0" width="263.9" height="82.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--accent-2,#28575D)" stroke-width="1.6"/></g>
-<g filter="url(#npaShadow)"><rect x="2518.0" y="490.0" width="212.8" height="100.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--accent-2,#28575D)" stroke-width="1.6"/></g>
-<g filter="url(#npaShadow)"><rect x="2213.7" y="749.0" width="256.6" height="82.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--accent-2,#28575D)" stroke-width="1.6"/></g>
-<g filter="url(#npaShadow)"><rect x="1931.3" y="490.0" width="234.7" height="100.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--accent-2,#28575D)" stroke-width="1.6"/></g>
-<g filter="url(#npaShadow)"><rect x="340.0" y="1232.0" width="300.0" height="96.0" rx="12" ry="12" fill="var(--warn,#A85A22)" stroke="none" stroke-width="1.6"/></g>
-<g filter="url(#npaShadow)"><rect x="328.9" y="980.0" width="322.3" height="100.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--warn,#A85A22)" stroke-width="1.6"/></g>
-<g filter="url(#npaShadow)"><rect x="1266.0" y="1232.0" width="300.0" height="96.0" rx="12" ry="12" fill="var(--ok,#3E7A4C)" stroke="none" stroke-width="1.6"/></g>
-<g filter="url(#npaShadow)"><rect x="1258.5" y="980.0" width="315.0" height="100.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--ok,#3E7A4C)" stroke-width="1.6"/></g>
-<g filter="url(#npaShadow)"><rect x="1548.9" y="1400.3" width="293.1" height="82.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--ok,#3E7A4C)" stroke-width="1.6"/></g>
-<g filter="url(#npaShadow)"><rect x="990.0" y="1408.8" width="263.9" height="82.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--ok,#3E7A4C)" stroke-width="1.6"/></g>
-<g filter="url(#npaShadow)"><rect x="2192.0" y="1247.5" width="300.0" height="65.0" rx="12" ry="12" fill="var(--ink-dim,#6B6152)" stroke="none" stroke-width="1.6"/></g>
-<g filter="url(#npaShadow)"><rect x="2206.4" y="989.0" width="271.2" height="82.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--ink-dim,#6B6152)" stroke-width="1.6"/></g>
-<g filter="url(#npaShadow)"><rect x="2518.0" y="1410.5" width="242.0" height="82.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--ink-dim,#6B6152)" stroke-width="1.6"/></g>
-<g filter="url(#npaShadow)"><rect x="1938.6" y="1397.3" width="227.4" height="100.0" rx="10" ry="10" fill="var(--paper,#FBF7EE)" stroke="var(--ink-dim,#6B6152)" stroke-width="1.6"/></g>
-<text x="490.0" y="519.0" text-anchor="middle" font-family="PT Serif, Georgia, serif" font-size="17.5" font-weight="700" fill="var(--accent-ink,#FBF7EE)">Государственная тайна</text>
-<text x="490.0" y="540.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="11.5" font-weight="400" fill="var(--accent-ink,#FBF7EE)">ФСБ России, ФСТЭК России</text>
-<text x="490.0" y="559.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--accent-ink,#FBF7EE)">РАБОЧЕЕ МЕСТО:</text>
-<text x="490.0" y="574.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="400" fill="var(--accent-ink,#FBF7EE)">НИИ «Периметр»</text>
-<text x="1416.0" y="522.0" text-anchor="middle" font-family="PT Serif, Georgia, serif" font-size="17.5" font-weight="700" fill="var(--accent-ink,#FBF7EE)">Служебная тайна / ДСП</text>
-<text x="1416.0" y="541.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--accent-ink,#FBF7EE)">РАБОЧЕЕ МЕСТО:</text>
-<text x="1416.0" y="556.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="400" fill="var(--accent-ink,#FBF7EE)">НИИ «Периметр»</text>
-<text x="1416.0" y="571.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="400" fill="var(--accent-ink,#FBF7EE)">Энергосеть (КИИ)</text>
-<text x="2342.0" y="504.0" text-anchor="middle" font-family="PT Serif, Georgia, serif" font-size="17.5" font-weight="700" fill="var(--accent-ink,#FBF7EE)">Персональные данные</text>
-<text x="2342.0" y="525.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="11.5" font-weight="400" fill="var(--accent-ink,#FBF7EE)">Роскомнадзор, Банк России</text>
-<text x="2342.0" y="544.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--accent-ink,#FBF7EE)">РАБОЧЕЕ МЕСТО:</text>
-<text x="2342.0" y="559.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="400" fill="var(--accent-ink,#FBF7EE)">НИИ «Периметр» · Банк</text>
-<text x="2342.0" y="574.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="400" fill="var(--accent-ink,#FBF7EE)">IT-компания</text>
-<text x="2342.0" y="589.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="400" fill="var(--accent-ink,#FBF7EE)">Энергосеть (КИИ)</text>
-<text x="490.0" y="1259.0" text-anchor="middle" font-family="PT Serif, Georgia, serif" font-size="17.5" font-weight="700" fill="var(--accent-ink,#FBF7EE)">Коммерческая тайна / ноу-хау</text>
-<text x="490.0" y="1280.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="11.5" font-weight="400" fill="var(--accent-ink,#FBF7EE)">Роскомнадзор</text>
-<text x="490.0" y="1299.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--accent-ink,#FBF7EE)">РАБОЧЕЕ МЕСТО:</text>
-<text x="490.0" y="1314.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="400" fill="var(--accent-ink,#FBF7EE)">Банк · IT-компания</text>
-<text x="1416.0" y="1259.0" text-anchor="middle" font-family="PT Serif, Georgia, serif" font-size="17.5" font-weight="700" fill="var(--accent-ink,#FBF7EE)">Значимый объект КИИ</text>
-<text x="1416.0" y="1280.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="11.5" font-weight="400" fill="var(--accent-ink,#FBF7EE)">ФСТЭК России, НКЦКИ / ГосСОПКА</text>
-<text x="1416.0" y="1299.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--accent-ink,#FBF7EE)">РАБОЧЕЕ МЕСТО:</text>
-<text x="1416.0" y="1314.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="400" fill="var(--accent-ink,#FBF7EE)">Энергосеть (КИИ)</text>
-<text x="2342.0" y="1274.5" text-anchor="middle" font-family="PT Serif, Georgia, serif" font-size="17.5" font-weight="700" fill="var(--accent-ink,#FBF7EE)">Общая правовая рамка</text>
-<text x="2342.0" y="1295.5" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="11.5" font-weight="400" fill="var(--accent-ink,#FBF7EE)">сквозная для всех объектов</text>
-<a xlink:href="https://www.consultant.ru/document/cons_doc_LAW_2481/" href="https://www.consultant.ru/document/cons_doc_LAW_2481/" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://www.consultant.ru/document/cons_doc_LAW_2481/</title><text x="490.0" y="269.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">Закон РФ №5485-1</text>
-<text x="490.0" y="286.5" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">«О государственной тайне»</text>
-<text x="490.0" y="322.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--danger,#A23A31)">consultant.ru ↗</text></a>
-<a xlink:href="https://www.consultant.ru/document/cons_doc_LAW_469293/" href="https://www.consultant.ru/document/cons_doc_LAW_469293/" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://www.consultant.ru/document/cons_doc_LAW_469293/</title><text x="490.0" y="769.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">ПП РФ №132 от 07.02.2024</text>
-<text x="490.0" y="786.5" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">допуск персонала, формы 1 / 2 / 3</text>
-<text x="490.0" y="822.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--danger,#A23A31)">consultant.ru ↗</text></a>
-<a xlink:href="https://base.garant.ru/10200083/" href="https://base.garant.ru/10200083/" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://base.garant.ru/10200083/</title><text x="1416.0" y="260.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">Указ Президента №188</text>
-<text x="1416.0" y="277.5" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">перечень сведений конфиденциального</text>
-<text x="1416.0" y="295.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">характера</text>
-<text x="1416.0" y="331.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--accent,#8C5E17)">base.garant.ru ↗</text></a>
-<a xlink:href="https://www.consultant.ru/document/cons_doc_LAW_61801/" href="https://www.consultant.ru/document/cons_doc_LAW_61801/" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://www.consultant.ru/document/cons_doc_LAW_61801/</title><text x="2342.0" y="269.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">152-ФЗ</text>
-<text x="2342.0" y="286.5" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">«О персональных данных»</text>
-<text x="2342.0" y="322.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--accent-2,#28575D)">consultant.ru ↗</text></a>
-<a xlink:href="https://cisoclub.ru/fstjek-rossii-gotovit-otmenu-prikaza-21-i-novuju-sistemu-zashhity-personalnyh-dannyh/" href="https://cisoclub.ru/fstjek-rossii-gotovit-otmenu-prikaza-21-i-novuju-sistemu-zashhity-personalnyh-dannyh/" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://cisoclub.ru/fstjek-rossii-gotovit-otmenu-prikaza-21-i-novuju-sistemu-zashhity-personalnyh-dannyh/</title><text x="2624.4" y="510.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">Приказ ФСТЭК №21</text>
-<text x="2624.4" y="527.5" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">отмена ожидается</text>
-<text x="2624.4" y="545.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">с 01.09.2026</text>
-<text x="2624.4" y="581.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--accent-2,#28575D)">cisoclub.ru ↗</text></a>
-<a xlink:href="https://rtmtech.ru/articles/obzor-851-p/" href="https://rtmtech.ru/articles/obzor-851-p/" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://rtmtech.ru/articles/obzor-851-p/</title><text x="2342.0" y="769.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">Положение ЦБ №851-П</text>
-<text x="2342.0" y="786.5" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">спец. режим для банков</text>
-<text x="2342.0" y="822.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--accent-2,#28575D)">rtmtech.ru ↗</text></a>
-<a xlink:href="https://protect.gost.ru/gost/details/73023910-82ab-4b4a-bf57-e676497f30a3" href="https://protect.gost.ru/gost/details/73023910-82ab-4b4a-bf57-e676497f30a3" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://protect.gost.ru/gost/details/73023910-82ab-4b4a-bf57-e676497f30a3</title><text x="2048.7" y="510.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">ГОСТ Р 57580.1-2017</text>
-<text x="2048.7" y="527.5" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">базовый состав</text>
-<text x="2048.7" y="545.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">мер защиты</text>
-<text x="2048.7" y="581.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--accent-2,#28575D)">protect.gost.ru ↗</text></a>
-<a xlink:href="https://www.consultant.ru/document/cons_doc_LAW_48699/" href="https://www.consultant.ru/document/cons_doc_LAW_48699/" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://www.consultant.ru/document/cons_doc_LAW_48699/</title><text x="490.0" y="1000.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">98-ФЗ «О коммерческой тайне»</text>
-<text x="490.0" y="1017.5" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">ст. 4 — режим, ст. 5 — перечень</text>
-<text x="490.0" y="1035.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">несекретных сведений</text>
-<text x="490.0" y="1071.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--warn,#A85A22)">consultant.ru ↗</text></a>
-<a xlink:href="https://base.garant.ru/71730198/" href="https://base.garant.ru/71730198/" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://base.garant.ru/71730198/</title><text x="1416.0" y="1000.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">187-ФЗ</text>
-<text x="1416.0" y="1017.5" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">«О безопасности критической</text>
-<text x="1416.0" y="1035.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">информационной инфраструктуры»</text>
-<text x="1416.0" y="1071.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--ok,#3E7A4C)">base.garant.ru ↗</text></a>
-<a xlink:href="https://rppa.pro/npa/fstek_05.02.2021" href="https://rppa.pro/npa/fstek_05.02.2021" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://rppa.pro/npa/fstek_05.02.2021</title><text x="1695.5" y="1420.3" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">Методика оценки угроз ФСТЭК</text>
-<text x="1695.5" y="1437.8" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">от 05.02.2021</text>
-<text x="1695.5" y="1473.3" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--ok,#3E7A4C)">rppa.pro ↗</text></a>
-<a xlink:href="https://base.garant.ru/70136258/" href="https://base.garant.ru/70136258/" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://base.garant.ru/70136258/</title><text x="1122.0" y="1428.8" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">ПП РФ №79 от 03.02.2012</text>
-<text x="1122.0" y="1446.3" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">лицензирование ТЗКИ</text>
-<text x="1122.0" y="1481.8" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--ok,#3E7A4C)">base.garant.ru ↗</text></a>
-<a xlink:href="https://www.consultant.ru/document/cons_doc_LAW_61798/" href="https://www.consultant.ru/document/cons_doc_LAW_61798/" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://www.consultant.ru/document/cons_doc_LAW_61798/</title><text x="2342.0" y="1009.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">149-ФЗ</text>
-<text x="2342.0" y="1026.5" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">общий понятийный аппарат</text>
-<text x="2342.0" y="1062.0" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--ink-dim,#6B6152)">consultant.ru ↗</text></a>
-<a xlink:href="https://base.garant.ru/71556224/" href="https://base.garant.ru/71556224/" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://base.garant.ru/71556224/</title><text x="2639.0" y="1430.5" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">Доктрина ИБ РФ</text>
-<text x="2639.0" y="1448.0" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">Указ Президента №646</text>
-<text x="2639.0" y="1483.5" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--ink-dim,#6B6152)">base.garant.ru ↗</text></a>
-<a xlink:href="https://fgos.ru/fgos/fgos-10-04-01-informacionnaya-bezopasnost-1455/" href="https://fgos.ru/fgos/fgos-10-04-01-informacionnaya-bezopasnost-1455/" target="_blank" rel="noopener noreferrer"><title>Открыть первоисточник: https://fgos.ru/fgos/fgos-10-04-01-informacionnaya-bezopasnost-1455/</title><text x="2052.3" y="1417.3" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">ФГОС ВО 10.04.01</text>
-<text x="2052.3" y="1434.8" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">+ профстандарт</text>
-<text x="2052.3" y="1452.3" text-anchor="middle" font-family="PT Sans, Segoe UI, Arial, sans-serif" font-size="12.6" font-weight="600" fill="var(--ink,#221C13)">«Специалист по ИБ»</text>
-<text x="2052.3" y="1488.3" text-anchor="middle" font-family="PT Mono, Courier New, monospace" font-size="10" font-weight="700" fill="var(--ink-dim,#6B6152)">fgos.ru ↗</text></a>
-</svg>
-    </div></div>
+  <p class="npa-map-intro">Прежде чем выбрать место работы, покрутите модель ниже: она показывает, из чего вообще складывается нормативно-правовая база вашей будущей должности. В центре — сфера «ОПОИБ», вокруг неё шесть спутников — объекты защиты информации (гостайна, служебная тайна, персональные данные, коммерческая тайна, значимый объект КИИ и сквозная правовая рамка). Размер спутника — не количество законов, а вес предусмотренной за его нарушение ответственности. Нажмите на спутник — откроется список актов с рабочими гиперссылками на первоисточник и строкой о том, чем конкретно грозит нарушение.</p>
+  <div class="atom-wrap">
+    <div class="atom-scene" id="atomScene">
+      <svg class="atom-bonds" id="atomBonds"></svg>
+      <div class="atom-inner" id="atomInner">
+        <div class="atom-core" id="atomCore">ОПОИБ</div>
+      </div>
+    </div>
+    <p class="atom-hint">тяните мышью, чтобы повернуть модель · нажмите на спутник, чтобы увидеть его законы и ответственность</p>
+    <div class="atom-panel" id="atomPanel"><div class="ap-empty">Выберите объект защиты на модели — здесь появится список нормативных актов и мера ответственности за их нарушение.</div></div>
   </div>
-  <p class="npa-map-caption">Карта наглядно показывает главный принцип дисциплины ОПОИБ: у каждого объекта защиты — свой правовой контур, и на практике специалист по ИБ применяет не «весь корпус законов сразу», а именно ту связку норм, которая относится к информации, обращающейся на его рабочем месте. Например, сотрудник режимного НИИ действует в контуре гостайны (закон РФ №5485-1, ПП РФ №132) и одновременно — служебной тайны и персональных данных, а специалист банка — в контуре персональных данных (152-ФЗ, Положение Банка России №851-П, ГОСТ Р 57580.1) и коммерческой тайны (98-ФЗ). Общая правовая рамка (149-ФЗ, Доктрина ИБ РФ, ФГОС ВО 10.04.01) действует сквозно для всех профилей.</p>
+  <p class="npa-map-caption">Модель наглядно показывает главный принцип дисциплины ОПОИБ: у каждого объекта защиты — свой правовой контур, и на практике специалист по ИБ применяет не «весь корпус законов сразу», а именно ту связку норм, которая относится к информации, обращающейся на его рабочем месте. Размер спутника при этом не подсказка «что важнее учить» по объёму, а честный вывод раздела 8 практикума («Ответственность за нарушения»): годы лишения свободы формально строже любого, даже многомиллионного административного штрафа, — поэтому значимый объект КИИ и коммерческая тайна на модели крупнее персональных данных, хотя оборотные штрафы за утечку ПДн выражаются в куда больших суммах.</p>
+  <script>
+  (function(){
+    "use strict";
+    var CLUSTERS = [
+      {key:'gostayna', title:'Государственная тайна', short:'Гостайна', color:'var(--danger,#A23A31)', reg:'ФСБ России, ФСТЭК России', org:['НИИ «Периметр»'], vec:[0,-1,0],
+       yearsMax:7, fineMax:0,
+       resp:'Уголовная — лишение свободы до 7 лет при тяжких последствиях (ст. 283 УК РФ, ч. 2); без отдельного штрафа',
+       respUrl:'https://www.consultant.ru/document/cons_doc_LAW_10699/b4dacd3a0bcbd2f7a4aeacd096abda9322100f0d/',
+       laws:[
+         {t:'Закон РФ №5485-1 «О государственной тайне»', url:'https://www.consultant.ru/document/cons_doc_LAW_2481/'},
+         {t:'ПП РФ №132 от 07.02.2024 — допуск персонала, формы 1 / 2 / 3', url:'https://www.consultant.ru/document/cons_doc_LAW_469293/'}
+       ]},
+      {key:'sluzh', title:'Служебная тайна / ДСП', short:'Служ. тайна / ДСП', color:'var(--accent,#8C5E17)', reg:null, org:['НИИ «Периметр»','Энергосеть (КИИ)'], vec:[1,0,0],
+       yearsMax:0, fineMax:200000,
+       resp:'Административная — штраф юр. лицу до 200 000 ₽ (ст. 13.14 КоАП РФ); уголовной ответственности за сам факт не установлено',
+       respUrl:'https://www.consultant.ru/document/cons_doc_LAW_34661/835dca84f369ce440288da07465dbbf24791784a/',
+       laws:[
+         {t:'Указ Президента №188 — перечень сведений конфиденциального характера', url:'https://base.garant.ru/10200083/'}
+       ]},
+      {key:'pdn', title:'Персональные данные', short:'Перс. данные', color:'var(--accent-2,#28575D)', reg:'Роскомнадзор, Банк России', org:['НИИ «Периметр»','Банк','IT-компания','Энергосеть (КИИ)'], vec:[0,0,1],
+       yearsMax:0, fineMax:20000000,
+       resp:'Административная — от 60 тыс. до 20 млн ₽, при повторной крупной утечке — оборотный штраф 1–3% от выручки (ст. 13.11 КоАП РФ)',
+       respUrl:'https://www.consultant.ru/document/cons_doc_LAW_34661/1f421640c6775ff67079ebde06a7d2f6d17b96db/',
+       laws:[
+         {t:'152-ФЗ «О персональных данных»', url:'https://www.consultant.ru/document/cons_doc_LAW_61801/'},
+         {t:'Приказ ФСТЭК №21 — отмена ожидается с 01.09.2026', url:'https://cisoclub.ru/fstjek-rossii-gotovit-otmenu-prikaza-21-i-novuju-sistemu-zashhity-personalnyh-dannyh/'},
+         {t:'Положение ЦБ №851-П — специальный режим для банков', url:'https://rtmtech.ru/articles/obzor-851-p/'},
+         {t:'ГОСТ Р 57580.1-2017 — базовый состав мер защиты', url:'https://protect.gost.ru/gost/details/73023910-82ab-4b4a-bf57-e676497f30a3'}
+       ]},
+      {key:'komm', title:'Коммерческая тайна / ноу-хау', short:'Комм. тайна', color:'var(--warn,#A85A22)', reg:'Роскомнадзор', org:['Банк','IT-компания'], vec:[0,1,0],
+       yearsMax:7, fineMax:5000000,
+       resp:'Уголовная — лишение свободы до 7 лет со штрафом до 5 млн ₽ при тяжких последствиях (ст. 183 УК РФ, ч. 4)',
+       respUrl:'https://www.consultant.ru/document/cons_doc_LAW_10699/696074503229a6bf1978651f48895bf3a8831bd8/',
+       laws:[
+         {t:'98-ФЗ «О коммерческой тайне» — ст. 4 режим, ст. 5 перечень несекретных сведений', url:'https://www.consultant.ru/document/cons_doc_LAW_48699/'}
+       ]},
+      {key:'kii', title:'Значимый объект КИИ', short:'Объект КИИ', color:'var(--ok,#3E7A4C)', reg:'ФСТЭК России, НКЦКИ / ГосСОПКА', org:['Энергосеть (КИИ)'], vec:[-1,0,0],
+       yearsMax:10, fineMax:1000000,
+       resp:'Уголовная — лишение свободы до 10 лет при отягчающих обстоятельствах (ст. 274.1 УК РФ, ч. 4–5) — самая строгая санкция среди всех шести объектов; отдельно штраф юр. лицу до 500 тыс. ₽ по ст. 13.12.1 КоАП РФ',
+       respUrl:'https://www.consultant.ru/document/cons_doc_LAW_10699/34672bc8c82c4b6f4b7c8cd4e77a9f414fed6cb1/',
+       laws:[
+         {t:'187-ФЗ «О безопасности критической информационной инфраструктуры»', url:'https://base.garant.ru/71730198/'},
+         {t:'Методика оценки угроз ФСТЭК от 05.02.2021', url:'https://rppa.pro/npa/fstek_05.02.2021'},
+         {t:'ПП РФ №79 от 03.02.2012 — лицензирование ТЗКИ', url:'https://base.garant.ru/70136258/'}
+       ]},
+      {key:'general', title:'Общая правовая рамка', short:'Общая рамка', color:'var(--ink-dim,#6B6152)', reg:'сквозная для всех объектов', org:null, vec:[0,0,-1],
+       yearsMax:0, fineMax:0,
+       resp:'Отдельной статьи ответственности нет — реализуется через нормы, применимые к конкретному объекту защиты выше',
+       respUrl:null,
+       laws:[
+         {t:'149-ФЗ — общий понятийный аппарат', url:'https://www.consultant.ru/document/cons_doc_LAW_61798/'},
+         {t:'Доктрина ИБ РФ — Указ Президента №646', url:'https://base.garant.ru/71556224/'},
+         {t:'ФГОС ВО 10.04.01 + профстандарт «Специалист по ИБ»', url:'https://fgos.ru/fgos/fgos-10-04-01-informacionnaya-bezopasnost-1455/'}
+       ]}
+    ];
+
+    var scene = document.getElementById('atomScene');
+    var inner = document.getElementById('atomInner');
+    var core = document.getElementById('atomCore');
+    var bondsSvg = document.getElementById('atomBonds');
+    var panel = document.getElementById('atomPanel');
+    if (!scene || !inner || !core || !bondsSvg || !panel) return;
+
+    var BASE_W = 852, BASE_R = 175, BASE_CORE = 122;
+    var R = BASE_R, coreSize = BASE_CORE;
+    var rotX = -16, rotY = -28;
+    var dragging = false, lastX = 0, lastY = 0, moved = 0;
+    var interacted = false;
+    var activeKey = null;
+
+    function severityScore(c){ return c.yearsMax*3 + Math.log10(Math.max(c.fineMax,1)); }
+    var MAX_SCORE = Math.max.apply(null, CLUSTERS.map(severityScore)) || 1;
+    function baseSizeFor(c){ return 44 + (severityScore(c)/MAX_SCORE)*42; }
+
+    CLUSTERS.forEach(function(c){
+      var d = document.createElement('div');
+      d.className = 'atom-moon';
+      d.dataset.key = c.key;
+      d.style.background = 'radial-gradient(circle at 34% 28%, rgba(255,255,255,.55), '+c.color+' 55%, '+c.color+' 100%)';
+      d.textContent = c.short || c.title;
+      inner.appendChild(d);
+      c._el = d;
+
+      var line = document.createElementNS('http://www.w3.org/2000/svg','line');
+      line.setAttribute('stroke', c.color);
+      line.setAttribute('stroke-width','2');
+      line.setAttribute('stroke-opacity','0.55');
+      bondsSvg.appendChild(line);
+      c._line = line;
+    });
+
+    // геометрия подстраивается под фактическую ширину сцены — на узких
+    // экранах спутники не должны обрезаться краем контейнера. Скрипт
+    // выполняется, пока #startScreen ещё display:none (страница открывается
+    // до оформления обложки), поэтому clientWidth в момент запуска равен 0 —
+    // окончательный пересчёт делает ResizeObserver, когда экран становится
+    // видимым и получает реальные размеры.
+    function applyWidth(w){
+      if (!w) return;
+      var raw = w / BASE_W;
+      // спутники не должны съёживаться до нечитаемого текста — их масштаб
+      // ограничен снизу сильнее, чем масштаб орбиты, которая сжимается
+      // свободнее, чтобы всё равно уместиться в узкий экран без обрезки
+      var rScale = Math.max(0.35, Math.min(1, raw));
+      var sizeScale = Math.max(0.75, Math.min(1, raw));
+      R = BASE_R * rScale;
+      coreSize = Math.round(BASE_CORE * sizeScale);
+      core.style.width = coreSize+'px'; core.style.height = coreSize+'px';
+      CLUSTERS.forEach(function(c){
+        var sz = Math.round(baseSizeFor(c) * sizeScale);
+        c._el.style.width = sz+'px'; c._el.style.height = sz+'px';
+      });
+    }
+
+    function render(){
+      inner.style.transform = 'rotateX('+rotX+'deg) rotateY('+rotY+'deg)';
+      var billboard = 'rotateY('+(-rotY)+'deg) rotateX('+(-rotX)+'deg)';
+      core.style.transform = billboard + ' translate(-50%,-50%)';
+      CLUSTERS.forEach(function(c){
+        var x = c.vec[0]*R, y = c.vec[1]*R, z = c.vec[2]*R;
+        c._el.style.transform = 'translate3d('+x+'px,'+y+'px,'+z+'px) ' + billboard + ' translate(-50%,-50%)';
+        if (c.key === activeKey) c._el.classList.add('is-active'); else c._el.classList.remove('is-active');
+      });
+      requestAnimationFrame(updateBonds);
+    }
+
+    function updateBonds(){
+      var sceneRect = scene.getBoundingClientRect();
+      var coreRect = core.getBoundingClientRect();
+      var cx = coreRect.left + coreRect.width/2 - sceneRect.left;
+      var cy = coreRect.top + coreRect.height/2 - sceneRect.top;
+      bondsSvg.setAttribute('viewBox', '0 0 '+sceneRect.width+' '+sceneRect.height);
+      CLUSTERS.forEach(function(c){
+        var r = c._el.getBoundingClientRect();
+        var mx = r.left + r.width/2 - sceneRect.left;
+        var my = r.top + r.height/2 - sceneRect.top;
+        c._line.setAttribute('x1', cx); c._line.setAttribute('y1', cy);
+        c._line.setAttribute('x2', mx); c._line.setAttribute('y2', my);
+      });
+    }
+
+    function selectCluster(key){
+      activeKey = key;
+      interacted = true;
+      var c = CLUSTERS.filter(function(x){return x.key===key;})[0];
+      if (!c) return;
+      var orgLine = c.org ? '<div class="ap-meta">Регулятор: <b>'+(c.reg||'—')+'</b><br>Рабочее место: <b>'+c.org.join(' · ')+'</b></div>'
+                           : (c.reg ? '<div class="ap-meta">Регулятор: <b>'+c.reg+'</b></div>' : '');
+      var respHtml = c.respUrl
+        ? '<a class="law-item resp-item" href="'+c.respUrl+'" target="_blank" rel="noopener noreferrer" title="Открыть первоисточник: '+c.respUrl+'">⚖ '+c.resp+'<span class="law-domain">'+c.respUrl.replace(/^https?:\/\//,'').replace(/^www\./,'').split('/')[0]+' ↗</span></a>'
+        : '<div class="law-item resp-item" style="cursor:default;">⚖ '+c.resp+'</div>';
+      var items = c.laws.map(function(l){
+        var domain = l.url.replace(/^https?:\/\//,'').replace(/^www\./,'').split('/')[0];
+        return '<a class="law-item" href="'+l.url+'" target="_blank" rel="noopener noreferrer" title="Открыть первоисточник: '+l.url+'">'+l.t+'<span class="law-domain">'+domain+' ↗</span></a>';
+      }).join('');
+      panel.innerHTML = '<h3>'+c.title+'</h3>' + orgLine + respHtml + items;
+      render();
+    }
+
+    scene.addEventListener('pointerdown', function(e){
+      dragging = true; moved = 0; lastX = e.clientX; lastY = e.clientY;
+      scene.classList.add('dragging');
+      scene.setPointerCapture(e.pointerId);
+      interacted = true;
+    });
+    scene.addEventListener('pointermove', function(e){
+      if (!dragging) return;
+      var dx = e.clientX - lastX, dy = e.clientY - lastY;
+      lastX = e.clientX; lastY = e.clientY;
+      moved += Math.abs(dx) + Math.abs(dy);
+      rotY += dx * 0.35;
+      rotX -= dy * 0.35;
+      if (rotX > 75) rotX = 75; if (rotX < -75) rotX = -75;
+      render();
+    });
+    scene.addEventListener('pointerup', function(e){
+      var wasTap = dragging && moved <= 6;
+      dragging = false; scene.classList.remove('dragging');
+      if (wasTap){
+        var hit = document.elementFromPoint(e.clientX, e.clientY);
+        var moonEl = hit && hit.closest ? hit.closest('.atom-moon') : null;
+        if (moonEl) selectCluster(moonEl.dataset.key);
+      }
+    });
+    ['pointerleave','pointercancel'].forEach(function(ev){
+      scene.addEventListener(ev, function(){ dragging = false; scene.classList.remove('dragging'); });
+    });
+
+    var lastT = null;
+    function idleTick(t){
+      if (!interacted){
+        if (lastT !== null){ rotY += (t-lastT) * 0.012; render(); }
+        lastT = t;
+      }
+      requestAnimationFrame(idleTick);
+    }
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    applyWidth(scene.clientWidth);
+    render();
+    if (!reduceMotion) requestAnimationFrame(idleTick);
+
+    var scaleT = null;
+    function scheduleRescale(w){
+      clearTimeout(scaleT);
+      scaleT = setTimeout(function(){ applyWidth(w); render(); }, 60);
+    }
+    if (window.ResizeObserver){
+      var ro = new ResizeObserver(function(entries){
+        for (var i=0;i<entries.length;i++) scheduleRescale(entries[i].contentRect.width);
+      });
+      ro.observe(scene);
+    } else {
+      // запасной вариант для очень старых браузеров без ResizeObserver
+      window.addEventListener('resize', function(){ scheduleRescale(scene.clientWidth); });
+    }
+  })();
+  </script>
 
   <div id="orgPickArea"></div>
 </div>
@@ -1104,21 +1242,23 @@ var STAGES = [
   theory:[
     'Организационно-правовая работа обретает смысл в том числе потому, что за её отсутствие или формальность предусмотрена реальная ответственность — и специалист по ИБ должен уметь быстро квалифицировать нарушение и назвать применимую норму, а не изобретать её на ходу. Административная ответственность сосредоточена в главе 13 КоАП РФ: ст. 13.11 — за нарушения в области персональных данных (от предупреждения до штрафов, кратно возрастающих при повторном нарушении и при трансграничной передаче с 2021 года), ст. 13.12 — за нарушение правил защиты информации, ст. 13.14 — за разглашение информации с ограниченным доступом.',
     'Уголовная ответственность применяется к более тяжким случаям: ст. 283 УК РФ — разглашение государственной тайны, ст. 283.1 — незаконное получение сведений, составляющих государственную тайну, ст. 137 — нарушение неприкосновенности частной жизни (в том числе неправомерный сбор или распространение персональных данных), ст. 183 — незаконные получение и разглашение сведений, составляющих коммерческую, налоговую или банковскую тайну.',
-    'Дисциплинарная ответственность (замечание, выговор, увольнение по ст. 81 ТК РФ за разглашение охраняемой законом тайны, ставшей известной работнику в связи с исполнением трудовых обязанностей) — самый частый и самый быстрый инструмент именно специалиста по ИБ, и здесь ключевую роль играют документы, оформленные на этапе 6: без подписанного обязательства о неразглашении привлечь работника к ответственности почти невозможно.'
+    'Дисциплинарная ответственность (замечание, выговор, увольнение по ст. 81 ТК РФ за разглашение охраняемой законом тайны, ставшей известной работнику в связи с исполнением трудовых обязанностей) — самый частый и самый быстрый инструмент именно специалиста по ИБ, и здесь ключевую роль играют документы, оформленные на этапе 6: без подписанного обязательства о неразглашении привлечь работника к ответственности почти невозможно.',
+    'Конкретные размеры санкций расходятся на порядки, и это расхождение стоит запомнить в привязке к объекту защиты, а не к абсолютной сумме в рублях. По ст. 13.11 КоАП РФ утечка персональных данных обходится юридическому лицу дороже всего в чисто денежном выражении: от 60–100 тыс. руб. за рядовое нарушение до 15–20 млн руб. и оборотного штрафа в размере 1–3% от выручки при повторной крупной утечке — это следствие ужесточения закона в 2024–2025 годах. Но это административная, а не уголовная ответственность. Уголовные санкции устроены иначе и формально строже, даже когда сумма в приговоре меньше: за неправомерное воздействие на значимый объект КИИ при отягчающих обстоятельствах (ст. 274.1 УК РФ) предусмотрено лишение свободы на срок до 10 лет — самая суровая санкция среди всех шести объектов; за разглашение государственной тайны (ст. 283 УК РФ) — до 7 лет; за незаконное разглашение коммерческой, налоговой или банковской тайны с тяжкими последствиями (ст. 183 УК РФ) — тоже до 7 лет, дополнительно со штрафом до 5 млн руб.; за разглашение служебной информации ограниченного доступа (ст. 13.14 КоАП РФ) санкция заметно мягче — штраф для юридического лица не превышает 200 тыс. руб. Вывод для специалиста по ИБ: крупный денежный штраф не означает более тяжкое нарушение — лишение свободы формально строже любого, даже многомиллионного административного штрафа.'
   ],
   task:{
     type:'assign',
     intro:'Для каждой ситуации в организации <b>' + '{{ORG_NAME}}' + '</b> определите вид ответственности, который применим прежде всего.',
-    items:['c1','c2','c3','c4'],
+    items:['c1','c2','c3','c4','c5'],
     itemLabels:{
       c1:'Сотрудник отправил клиентскую базу с персональными данными на личную почту без служебной необходимости',
       c2:'Сотрудник, имеющий допуск, передал третьему лицу сведения, составляющие государственную тайну',
       c3:'Бывший работник разгласил конкурентам сведения, составляющие коммерческую тайну, вопреки подписанному NDA',
-      c4:'Организация не уведомила Роскомнадзор о начале обработки персональных данных'
+      c4:'Организация не уведомила Роскомнадзор о начале обработки персональных данных',
+      c5:'У оператора произошла повторная крупная утечка персональных данных 2 млн клиентов — грозит оборотный штраф в несколько миллионов рублей, но обвинения в уголовном преступлении никому не предъявлены'
     },
     options:['disc','adm','crim'],
     optionLabels:{disc:'Дисциплинарная (ТК РФ)', adm:'Административная (КоАП РФ, гл. 13)', crim:'Уголовная (УК РФ)'},
-    correctFor: function(){ return {c1:'disc', c2:'crim', c3:'crim', c4:'adm'}; }
+    correctFor: function(){ return {c1:'disc', c2:'crim', c3:'crim', c4:'adm', c5:'adm'}; }
   },
   test:{
     threshold:1,
@@ -1126,7 +1266,8 @@ var STAGES = [
       {q:'Какая статья КоАП РФ устанавливает ответственность за нарушения в области персональных данных?', options:['ст. 13.11 КоАП РФ','ст. 283 УК РФ','ст. 6.1 закона №98-ФЗ'], correct:0},
       {q:'Какая статья УК РФ предусмотрена за разглашение государственной тайны?', options:['ст. 283 УК РФ','ст. 137 УК РФ','ст. 183 УК РФ'], correct:0},
       {q:'Что нужно оформить заранее, чтобы реально привлечь работника к ответственности за разглашение тайны?', options:['подписанное им обязательство о неразглашении / условие в трудовом договоре','устное предупреждение начальника','повышение оклада'], correct:0},
-      {q:'Какая статья УК РФ применяется за незаконные получение и разглашение коммерческой, налоговой или банковской тайны?', options:['ст. 183 УК РФ','ст. 284 УК РФ','ст. 13.14 КоАП РФ'], correct:0}
+      {q:'Какая статья УК РФ применяется за незаконные получение и разглашение коммерческой, налоговой или банковской тайны?', options:['ст. 183 УК РФ','ст. 284 УК РФ','ст. 13.14 КоАП РФ'], correct:0},
+      {q:'Какая максимальная санкция предусмотрена за неправомерное воздействие на значимый объект КИИ, повлёкшее тяжкие последствия (ст. 274.1 УК РФ) — и как она соотносится с остальными пятью объектами защиты?', options:['лишение свободы до 10 лет — самая строгая санкция среди всех шести объектов защиты','штраф до 5 000 рублей — самая мягкая санкция','только дисквалификация должностного лица на 3 года'], correct:0}
     ]
   }
 },
