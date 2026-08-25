@@ -1757,6 +1757,7 @@ function submitGate(){
       // Отмечается только собственный выбор студента: зелёным — если он верный,
       // красным — если нет; какой вариант правильный, при ошибке не раскрывается.
       labels.forEach(function(lab, oi){
+        lab.classList.remove('is-correct', 'is-wrong');
         if (pickedIdx === oi) lab.classList.add(oi === q.correct ? 'is-correct' : 'is-wrong');
       });
       var isCorrect = pickedIdx === q.correct;
@@ -2137,14 +2138,15 @@ function submitTest(stageId){
   var picks = [];
   qs.forEach(function(q, qi){
     var picked = document.querySelector('input[name="q' + qi + '"]:checked');
+    var pickedIdx = picked ? parseInt(picked.value,10) : null;
     var wrap = document.querySelector('.test-q[data-qi="' + qi + '"]');
     var labels = wrap.querySelectorAll('label');
     labels.forEach(function(lab, oi){
-      if (oi === q.correct) lab.classList.add('is-correct');
-      else if (picked && parseInt(picked.value,10) === oi) lab.classList.add('is-wrong');
+      lab.classList.remove('is-correct', 'is-wrong');
+      if (pickedIdx === oi) lab.classList.add(oi === q.correct ? 'is-correct' : 'is-wrong');
     });
-    picks.push(picked ? parseInt(picked.value,10) : null);
-    if (picked && parseInt(picked.value,10) === q.correct) score++;
+    picks.push(pickedIdx);
+    if (pickedIdx === q.correct) score++;
   });
   var st = stageState(stageId);
   st.testScore = score;
