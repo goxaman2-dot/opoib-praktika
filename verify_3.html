@@ -83,6 +83,26 @@
   }
   .grand-total b{color:var(--accent);}
 
+  .dup-banner{
+    background:var(--danger-bg); color:var(--danger); border:2px solid var(--danger); border-radius:var(--radius);
+    padding:16px 18px; font-size:13.5px; margin-bottom:20px;
+  }
+  .dup-banner h3{font-family:"PT Serif",serif; font-size:15.5px; margin:0 0 8px;}
+  .dup-banner ul{margin:6px 0 0; padding-left:20px;}
+  .dup-banner li{margin-bottom:6px; line-height:1.5;}
+  .dup-clean{
+    background:var(--ok-bg); color:var(--ok); border:1.5px solid var(--ok); border-radius:10px;
+    padding:12px 15px; font-size:13.5px; font-weight:700; margin-bottom:20px;
+  }
+  table.summary-table{width:100%; border-collapse:collapse; font-size:13px; margin-bottom:20px;}
+  table.summary-table th, table.summary-table td{border:1px solid var(--folder-line); padding:8px 10px; text-align:left;}
+  table.summary-table th{background:var(--paper); font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-dim); font-weight:700;}
+  table.summary-table tr.has-dup td{background:var(--danger-bg);}
+  table.summary-table tr.has-mismatch td{background:var(--warn-bg);}
+  .student-block{border-top:2px solid var(--folder-line); padding-top:18px; margin-top:26px;}
+  .student-block:first-of-type{border-top:none; margin-top:0; padding-top:0;}
+  .batch-note{font-size:12.5px; color:var(--ink-dim); margin-bottom:16px;}
+
   .btn{
     display:inline-flex; align-items:center; gap:6px; border:none; border-radius:8px;
     padding:10px 18px; font-size:14px; font-weight:700; cursor:pointer;
@@ -102,7 +122,7 @@
 <div class="wrap">
   <div class="badge-priv">только для преподавателя · не передавайте студентам</div>
   <h1>Проверка сдачи — ОПОИБ</h1>
-  <p class="lede">Инструмент сверяет файл, который студент выгрузил кнопкой «Сохранить дело для сдачи», с вашим эталонным Excel — и пересчитывает реальный балл по тому, что студент выбирал, а не по тому, что сообщает о себе его собственная копия практикума. Всё происходит локально в этой странице, ничего никуда не отправляется.</p>
+  <p class="lede">Инструмент сверяет файл, который студент выгрузил кнопкой «Сохранить дело для сдачи», с вашим эталонным Excel — и пересчитывает реальный балл по тому, что студент выбирал, а не по тому, что сообщает о себе его собственная копия практикума. Можно загрузить сразу несколько файлов — всю группу за один раз: тогда инструмент дополнительно сверит сдачи между собой и укажет на признаки того, что файл одного студента был просто передан другому (совпадающий ID экземпляра, время выгрузки или дословный текст в свободных полях заданий). Всё происходит локально в этой странице, ничего никуда не отправляется.</p>
 
   <div class="card no-print">
     <h2>1. Загрузите файлы</h2>
@@ -113,9 +133,9 @@
         <div class="upload-status" id="keyStatus">не загружен</div>
       </div>
       <div class="upload-box" id="boxSub">
-        <label for="subInput">Файл сдачи студента (.json)</label>
-        <input type="file" id="subInput" accept=".json">
-        <div class="upload-status" id="subStatus">не загружен</div>
+        <label for="subInput">Файл(ы) сдачи студентов (.json) — можно выбрать сразу всю группу</label>
+        <input type="file" id="subInput" accept=".json" multiple>
+        <div class="upload-status" id="subStatus">не загружено</div>
       </div>
     </div>
   </div>
@@ -199,25 +219,49 @@ document.getElementById('keyInput').addEventListener('change', function(e){
   reader.readAsArrayBuffer(file);
 });
 
+var submissions = []; // массив { fileName, data } — одна или сразу вся группа
+
 document.getElementById('subInput').addEventListener('change', function(e){
-  var file = e.target.files && e.target.files[0];
-  if (!file) return;
-  var reader = new FileReader();
-  reader.onload = function(ev){
-    try{
-      var data = JSON.parse(ev.target.result);
-      if (data.format !== 'opmoib-submission-v1') throw new Error('неизвестный формат файла сдачи');
-      submission = data;
+  var files = e.target.files ? Array.prototype.slice.call(e.target.files) : [];
+  if (!files.length) return;
+  var results = new Array(files.length);
+  var errors = [];
+  var remaining = files.length;
+  files.forEach(function(file, idx){
+    var reader = new FileReader();
+    reader.onload = function(ev){
+      try{
+        var data = JSON.parse(ev.target.result);
+        if (data.format !== 'opmoib-submission-v1') throw new Error('неизвестный формат');
+        results[idx] = data;
+      }catch(err){
+        errors.push(file.name + ': ' + err.message);
+      }
+      remaining--;
+      if (remaining === 0) finish();
+    };
+    reader.onerror = function(){
+      errors.push(file.name + ': не удалось прочитать файл');
+      remaining--;
+      if (remaining === 0) finish();
+    };
+    reader.readAsText(file, 'utf-8');
+  });
+  function finish(){
+    submission = null;
+    submissions = results.filter(function(d){ return !!d; });
+    if (submissions.length){
       document.getElementById('boxSub').classList.add('is-loaded');
-      setStatus('subStatus', 'загружено — ' + esc(data.student && data.student.name || '—'), 'ok');
-      tryRender();
-    }catch(err){
-      submission = null;
+      var label = submissions.length === 1
+        ? 'загружено — ' + esc(submissions[0].student && submissions[0].student.name || '—')
+        : 'загружено файлов: ' + submissions.length + (errors.length ? ' (с ошибками: ' + errors.length + ')' : '');
+      setStatus('subStatus', label, errors.length ? 'err' : 'ok');
+    } else {
       document.getElementById('boxSub').classList.remove('is-loaded');
-      setStatus('subStatus', 'ошибка чтения файла: ' + err.message, 'err');
+      setStatus('subStatus', 'ошибка чтения файла(ов): ' + errors.join('; '), 'err');
     }
-  };
-  reader.readAsText(file, 'utf-8');
+    tryRender();
+  }
 });
 
 function checkAnswers(answers){
@@ -259,25 +303,44 @@ function ansTable(rows){
   return html;
 }
 
-function tryRender(){
-  if (!keyMap || !submission) return;
-  var area = document.getElementById('resultArea');
-  var stu = submission.student || {};
+// извлекает непустые фрагменты свободного текста, который студент написал сам
+// (сейчас это только freeText-поле заданий типа "fill"; чек-листы/выпадающие
+// списки — тоже сырые данные в taskAnswers, но это выбор из фиксированного
+// набора, а не авторский текст, поэтому для сверки на клонирование не годится)
+function extractFreeTexts(sub){
+  var out = []; // [{stageId, text}]
+  (sub.orgs || []).forEach(function(org){
+    (org.stages || []).forEach(function(st){
+      var ta = st.taskAnswers;
+      if (ta && typeof ta === 'object' && !Array.isArray(ta)){
+        Object.keys(ta).forEach(function(k){
+          var v = ta[k];
+          if (typeof v === 'string' && norm(v).length >= 8){ // короткие/пустые ответы не сравниваем — слишком много случайных совпадений
+            out.push({ stageId: st.stageId, key: k, text: v });
+          }
+        });
+      }
+    });
+  });
+  return out;
+}
+
+function renderStudentBlock(sub){
+  var stu = sub.student || {};
   var html = '';
 
   html += '<div class="stu-head"><div class="stu-name">' + esc(stu.name || 'ФИО не указано') + '</div>' +
     (stu.group ? '<div class="stu-group">группа ' + esc(stu.group) + '</div>' : '') +
     (stu.sessionId ? '<div class="stu-watermark">ID экземпляра ' + esc(stu.sessionId) + (stu.firstSubmittedAt ? ' · оформлено ' + esc(new Date(stu.firstSubmittedAt).toLocaleString('ru-RU')) : '') + '</div>' : '') +
   '</div>';
-  if (submission.exportedAt){
-    html += '<div style="font-size:12px; color:var(--ink-dim); margin-bottom:6px;">Файл сдачи выгружен: ' + esc(new Date(submission.exportedAt).toLocaleString('ru-RU')) + '</div>';
+  if (sub.exportedAt){
+    html += '<div style="font-size:12px; color:var(--ink-dim); margin-bottom:6px;">Файл сдачи выгружен: ' + esc(new Date(sub.exportedAt).toLocaleString('ru-RU')) + '</div>';
   }
 
   var totalMismatch = 0;
   var grandCorrect = 0, grandTotal = 0;
 
-  // ---- тест-шлюз ----
-  var gate = submission.gate || { answers: [] };
+  var gate = sub.gate || { answers: [] };
   var gateCheck = checkAnswers(gate.answers || []);
   totalMismatch += gateCheck.mismatchCount;
   grandCorrect += gateCheck.correctCount; grandTotal += gateCheck.totalCount;
@@ -293,8 +356,7 @@ function tryRender(){
     }
   }
 
-  // ---- этапы по организациям ----
-  (submission.orgs || []).forEach(function(org){
+  (sub.orgs || []).forEach(function(org){
     html += '<div class="section-title" style="margin-top:26px; border-top:1px solid var(--folder-line); padding-top:16px;">Роль: ' + esc(org.orgName || org.orgId) + '</div>';
     var orgCorrect = 0, orgTotal = 0, orgMismatch = 0;
     (org.stages || []).forEach(function(st){
@@ -303,7 +365,6 @@ function tryRender(){
       orgMismatch += check.mismatchCount;
       grandCorrect += check.correctCount; grandTotal += check.totalCount;
       totalMismatch += check.mismatchCount;
-      var realPassed = check.totalCount > 0 && (check.correctCount / check.totalCount) > 0; // порог по этапам мягкий (1–2 из 4-8), реальный порог не критичен для итогового балла
       html += '<div style="font-size:13.5px; font-weight:700; margin:12px 0 4px;">Этап ' + st.stageId + '. ' + esc(st.title) +
         ' <span class="score-chip ' + (check.correctCount === check.totalCount && check.totalCount>0 ? 'pass' : (check.totalCount===0?'':'fail')) + '" style="margin-left:8px;">' + check.correctCount + ' / ' + check.totalCount + '</span></div>';
       if (check.totalCount > 0) html += ansTable(check.rows);
@@ -322,6 +383,138 @@ function tryRender(){
 
   var grandPct = grandTotal ? Math.round(grandCorrect/grandTotal*100) : 0;
   html += '<div class="grand-total">Всего проверено вопросов: <b>' + grandTotal + '</b>, верно: <b>' + grandCorrect + '</b> (' + grandPct + '%).</div>';
+
+  return {
+    html: html,
+    stats: {
+      name: stu.name || 'ФИО не указано',
+      group: stu.group || '',
+      sessionId: stu.sessionId || null,
+      exportedAt: sub.exportedAt || null,
+      gatePassReal: gatePassReal,
+      gateScore: gateCheck.correctCount,
+      grandCorrect: grandCorrect,
+      grandTotal: grandTotal,
+      grandPct: grandPct,
+      mismatchCount: totalMismatch
+    }
+  };
+}
+
+// ---- пакетный поиск совпадений между «разными» сдачами (сценарий: отличник
+// передал свой файл сдачи другому студенту, тот поменял в тексте ФИО/группу
+// и сдал под своим именем) ----
+function detectDuplicates(items){
+  // items: [{sub, stats}]
+  var warnings = []; // [{severity:'high'|'medium', text}]
+  var dupNames = {}; // index -> true, для подсветки строк в сводной таблице
+
+  // 1) одинаковый sessionId (водяной знак) у разных студентов — сильный признак:
+  // это значит, что файл в буквальном смысле не редактировался по существу,
+  // менялось только отображаемое ФИО
+  var byId = {};
+  items.forEach(function(it, i){
+    var id = it.stats.sessionId;
+    if (!id) return;
+    if (!byId[id]) byId[id] = [];
+    byId[id].push(i);
+  });
+  Object.keys(byId).forEach(function(id){
+    var idxs = byId[id];
+    if (idxs.length < 2) return;
+    var names = idxs.map(function(i){ return items[i].stats.name; });
+    warnings.push({ severity:'high', text:'Одинаковый ID экземпляра «' + esc(id) + '» встречается у ' + idxs.length + ' сдач под разными именами: ' + names.map(esc).join(', ') + '. Это значит, что личное дело физически одно и то же — файл был просто передан и переименован, содержимое не редактировалось.' });
+    idxs.forEach(function(i){ dupNames[i] = true; });
+  });
+
+  // 2) идентичное время выгрузки (exportedAt) у разных студентов — тоже почти
+  // невозможное совпадение при самостоятельной работе (разве что секунда в секунду)
+  var byTime = {};
+  items.forEach(function(it, i){
+    var t = it.stats.exportedAt;
+    if (!t) return;
+    if (!byTime[t]) byTime[t] = [];
+    byTime[t].push(i);
+  });
+  Object.keys(byTime).forEach(function(t){
+    var idxs = byTime[t];
+    if (idxs.length < 2) return;
+    var names = idxs.map(function(i){ return items[i].stats.name; });
+    warnings.push({ severity:'medium', text:'Полностью совпадает время выгрузки файла (' + esc(new Date(t).toLocaleString('ru-RU')) + ') у: ' + names.map(esc).join(', ') + '. Стоит уточнить, не выгружался ли файл один раз и не переименовывался ли затем.' });
+    idxs.forEach(function(i){ dupNames[i] = true; });
+  });
+
+  // 3) дословно совпадающий свободный текст задания у разных студентов
+  var textIndex = {}; // normalized text -> [{i, stageId}]
+  items.forEach(function(it, i){
+    extractFreeTexts(it.sub).forEach(function(ft){
+      var key = norm(ft.text);
+      if (!textIndex[key]) textIndex[key] = [];
+      textIndex[key].push({ i: i, stageId: ft.stageId, original: ft.text });
+    });
+  });
+  Object.keys(textIndex).forEach(function(key){
+    var entries = textIndex[key];
+    var uniqueStudents = {};
+    entries.forEach(function(e){ uniqueStudents[e.i] = true; });
+    var idxs = Object.keys(uniqueStudents).map(Number);
+    if (idxs.length < 2) return;
+    var names = idxs.map(function(i){ return items[i].stats.name; });
+    var sample = entries[0].original;
+    warnings.push({ severity:'high', text:'Дословно одинаковый текст в свободном поле задания (этап ' + entries[0].stageId + ') у: ' + names.map(esc).join(', ') + ' — «' + esc(sample.length > 140 ? sample.slice(0,140) + '…' : sample) + '».' });
+    idxs.forEach(function(i){ dupNames[i] = true; });
+  });
+
+  return { warnings: warnings, dupIndexes: dupNames };
+}
+
+function summaryTable(items, dupIndexes){
+  var html = '<table class="summary-table"><thead><tr><th>ФИО</th><th>Группа</th><th>Шлюз</th><th>Итог по тестам</th><th>%</th><th>Расхожд.</th></tr></thead><tbody>';
+  items.forEach(function(it, i){
+    var s = it.stats;
+    var rowCls = dupIndexes[i] ? 'has-dup' : (s.mismatchCount > 0 ? 'has-mismatch' : '');
+    html += '<tr class="' + rowCls + '">' +
+      '<td>' + esc(s.name) + (dupIndexes[i] ? ' ⚠' : '') + '</td>' +
+      '<td>' + esc(s.group) + '</td>' +
+      '<td>' + s.gateScore + '/30 ' + (s.gatePassReal ? '✓' : '✗') + '</td>' +
+      '<td>' + s.grandCorrect + ' / ' + s.grandTotal + '</td>' +
+      '<td>' + s.grandPct + '%</td>' +
+      '<td>' + (s.mismatchCount > 0 ? s.mismatchCount : '—') + '</td>' +
+    '</tr>';
+  });
+  html += '</tbody></table>';
+  return html;
+}
+
+function tryRender(){
+  if (!keyMap || !submissions.length) return;
+  var area = document.getElementById('resultArea');
+  var html = '';
+
+  var items = submissions.map(function(sub){
+    var r = renderStudentBlock(sub);
+    return { sub: sub, stats: r.stats, html: r.html };
+  });
+
+  if (items.length === 1){
+    // одиночная проверка — как раньше, без сводной таблицы и поиска дублей
+    // (сверять на совпадения не с кем)
+    html += items[0].html;
+  } else {
+    var dup = detectDuplicates(items);
+    if (dup.warnings.length){
+      html += '<div class="dup-banner"><h3>⚠ Найдены признаки совпадения между сдачами (' + dup.warnings.length + ')</h3><ul>' +
+        dup.warnings.map(function(w){ return '<li>' + w.text + '</li>'; }).join('') +
+        '</ul></div>';
+    } else {
+      html += '<div class="dup-clean">✓ Признаков клонирования (одинаковый ID экземпляра, время выгрузки или дословный текст) между загруженными сдачами не найдено.</div>';
+    }
+    html += '<div class="batch-note">Загружено сдач: ' + items.length + '. Ниже — сводка по группе, затем подробный разбор по каждому студенту.</div>';
+    html += summaryTable(items, dup.dupIndexes);
+    items.forEach(function(it){
+      html += '<div class="student-block">' + it.html + '</div>';
+    });
+  }
 
   area.innerHTML = html;
   document.getElementById('printRow').style.display = 'flex';

@@ -703,6 +703,10 @@ setTimeout(animateProgress, 400);
   <div class="btn-row">
     <button class="btn" onclick="submitCover()">Оформить обложку дела →</button>
   </div>
+  <input type="file" id="restoreInput" accept=".json" style="display:none;" onchange="restoreProgress(this)" />
+  <div class="btn-row" style="margin-top:2px;">
+    <button type="button" class="reset-link" onclick="document.getElementById('restoreInput').click()">📂 Восстановить прогресс из резервной копии (если продолжаете практикум на другом компьютере)</button>
+  </div>
 </div>
 
 <div id="startScreen" class="start-screen" style="display:none;">
@@ -967,6 +971,7 @@ setTimeout(animateProgress, 400);
   <div class="btn-row" style="margin-top:8px; flex-wrap:wrap; gap:14px;">
     <button class="reset-link" onclick="backToImmersion()">← Вернуться к модели и тесту по законодательству</button>
     <button class="reset-link" onclick="exportSubmission()">💾 Сохранить дело для сдачи преподавателю</button>
+    <button class="reset-link" onclick="backupProgress()">🗄️ Резервная копия прогресса (для другого компьютера)</button>
   </div>
 </div>
 
@@ -985,6 +990,7 @@ setTimeout(animateProgress, 400);
       <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
       <div class="progress-label" id="progressLabel">Пройдено этапов: 0 / 9</div>
       <button class="btn btn-ghost" style="width:100%; justify-content:center; margin-top:10px; font-size:12.5px; padding:8px 10px;" onclick="exportSubmission()">💾 Сохранить дело для сдачи</button>
+      <button class="btn btn-ghost" style="width:100%; justify-content:center; margin-top:6px; font-size:12.5px; padding:8px 10px;" onclick="backupProgress()">🗄️ Резервная копия прогресса</button>
       <div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
         <button class="reset-link" onclick="backToGallery()">← Ко всем ролям</button>
         <button class="reset-link" onclick="resetAll()">Начать личное дело заново</button>
@@ -2283,6 +2289,62 @@ function render(){
   document.getElementById('mainPanel').innerHTML = html;
 }
 
+/* ===================== РЕЗЕРВНАЯ КОПИЯ ПРОГРЕССА (перенос между компьютерами) =====================
+   Отдельная функция от «Сдать дело преподавателю» ниже — та выгружает только
+   сырые ответы для внешней проверки и НЕ содержит состояние прохождения
+   (какие задания сданы, на каком этапе студент остановился, текст в полях
+   заданий и т.п.), поэтому загрузить её обратно и продолжить с того же места
+   нельзя. Эта же функция выгружает/загружает состояние практикума целиком
+   (весь объект state, как он лежит в localStorage) — чтобы студент, работающий
+   поэтапно, мог скачать копию, перенести её на другой компьютер (или
+   восстановить после очистки браузера) и продолжить ровно с того места, где
+   остановился. Хранится только локально, никуда не отправляется. */
+function backupProgress(){
+  var stu = studentInfo();
+  var payload = { format: 'opmoib-backup-v1', savedAt: new Date().toISOString(), state: state };
+  var json = JSON.stringify(payload, null, 2);
+  var blob = new Blob([json], { type:'application/json' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  var safeName = (stu.name || 'student').replace(/[^\wа-яёА-ЯЁ\- ]+/g, '').trim().replace(/\s+/g, '_') || 'student';
+  var dateStamp = new Date().toISOString().slice(0,10);
+  a.href = url;
+  a.download = 'резервная_копия_' + safeName + '_' + dateStamp + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+}
+window.backupProgress = backupProgress;
+
+function restoreProgress(input){
+  var file = input.files && input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(ev){
+    try{
+      var data = JSON.parse(ev.target.result);
+      if (!data || data.format !== 'opmoib-backup-v1' || !data.state || typeof data.state !== 'object'){
+        throw new Error('это не файл резервной копии практикума (нужен файл, полученный через «Скачать резервную копию прогресса»)');
+      }
+      var restoredName = (data.state.student && data.state.student.name) || '—';
+      var hasExisting = !!(state && state.student && state.student.name);
+      var msg = hasExisting
+        ? 'В этом браузере уже есть личное дело «' + state.student.name + '». Загрузка резервной копии ЗАМЕНИТ его данными из файла (личное дело «' + restoredName + '»). Продолжить?'
+        : 'Восстановить личное дело «' + restoredName + '» из резервной копии?';
+      if (!window.confirm(msg)){ input.value=''; return; }
+      state = data.state;
+      saveState();
+      window.location.reload();
+    }catch(err){
+      alert('Не удалось прочитать файл резервной копии: ' + err.message);
+      input.value = '';
+    }
+  };
+  reader.readAsText(file, 'utf-8');
+}
+window.restoreProgress = restoreProgress;
+
 /* ===================== СДАЧА ДЕЛА ПРЕПОДАВАТЕЛЮ (экспорт для внешней проверки) =====================
    Выгружает не самоотчёт («сдано/не сдано»), а то, что студент реально выбирал —
    текст выбранного варианта по каждому вопросу, привязанный к стабильному id
@@ -2314,6 +2376,12 @@ function exportSubmission(){
         stageId: s.id,
         title: s.title,
         taskDone: !!st.taskDone,
+        // сырые ответы студента по заданию этапа (чек-лист/выпадающие списки/
+        // свободный текст) — в отличие от answers (тест) это не сверяется
+        // построчно с эталоном, а используется инструментом проверки только
+        // для поиска совпадений между «разными» сдачами (например, дословно
+        // одинаковый текст в свободном поле у двух разных студентов)
+        taskAnswers: (st.taskAnswers !== undefined) ? st.taskAnswers : null,
         selfReportedTestScore: st.testScore || 0,
         selfReportedTestPassed: !!st.testPassed,
         answers: answers
